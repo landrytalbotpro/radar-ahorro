@@ -150,7 +150,9 @@ dialog::backdrop{background:rgba(10,20,26,.55)}
 .who img{border-radius:50%;flex:none;object-fit:cover}
 .who h2{margin:0 0 .2rem;font-size:1.2rem}
 .who p{margin:0 0 .4rem;color:var(--muted);font-size:.95rem}
-.who-links a{color:var(--water);font-weight:700}
+.who-links a,#whoProjects a{color:var(--water);font-weight:700}
+@media (max-width:540px){.who{flex-direction:column;align-items:flex-start}}
+.who .who-role{color:var(--ink);font-weight:700;margin-bottom:.5rem}
 /* bêta, retours, pied de page */
 .beta{font:700 .7rem var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--water);background:var(--water-soft);border-radius:999px;padding:.12rem .5rem;margin-left:.15rem}
 .fb{margin-top:2.75rem;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.4rem}
@@ -296,10 +298,12 @@ dialog::backdrop{background:rgba(10,20,26,.55)}
     </section>
   </main>
   <section class="who" aria-labelledby="whoTitle">
-    <img src="icons/landry.jpg" width="72" height="72" alt="Landry" loading="lazy">
+    <img src="icons/landry.jpg" width="72" height="72" alt="Landry Talbot Antoinette" loading="lazy">
     <div>
-      <h2 id="whoTitle" data-i="whoTitle"></h2>
+      <h2 id="whoTitle">Landry Talbot Antoinette</h2>
+      <p class="who-role" data-i="whoRole"></p>
       <p data-i="whoText"></p>
+      <p id="whoProjects"></p>
       <p class="who-links"><a href="https://github.com/landrytalbotpro/radar-ahorro" target="_blank" rel="noopener" data-i="whoCode"></a> · <a href="mailto:landrytalbotpro@gmail.com" data-i="whoMail"></a></p>
     </div>
   </section>

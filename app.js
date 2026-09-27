@@ -81,8 +81,9 @@ fr:{
   manualGo:"Voir mon résultat",
   manualMeta:"Ajouté à la main",
   perMonthShort:"/ mois",
-  whoTitle:"Fait par Landry, en Espagne",
-  whoText:"Je suis footballeur et je crée des sites web. J'ai fait Radar pour aider chacun à arrêter de payer ce qu'il n'utilise plus. C'est un projet personnel, gratuit, et tout le code est public.",
+  whoRole:"Footballeur semi-professionnel et fondateur de projets digitaux",
+  whoText:"J'ai créé Radar parce que je voyais beaucoup de gens autour de moi payer chaque mois des abonnements qu'ils n'utilisaient plus, sans s'en rendre compte. Je voulais un outil simple, gratuit et respectueux de la vie privée.",
+  whoProjects:"Je dirige aussi <a href=\"https://nextlevelplayerai.com/fr/histoire.html\" target=\"_blank\" rel=\"noopener\">Next Level Player</a>, qui aide les footballeurs amateurs à avoir une image professionnelle, et <a href=\"https://nuvorastudio.es/\" target=\"_blank\" rel=\"noopener\">Nuvora Studio</a>, studio de création de sites web pour les entreprises, avec l'aide d'<a href=\"https://www.instagram.com/awra_studios\" target=\"_blank\" rel=\"noopener\">Awra Studios</a>, creative & AI director.",
   whoCode:"Voir le code sur GitHub", whoMail:"M'écrire",
   locale:"fr-FR"
 },
@@ -164,8 +165,9 @@ es:{
   manualGo:"Ver mi resultado",
   manualMeta:"Añadido a mano",
   perMonthShort:"/ mes",
-  whoTitle:"Hecho por Landry, en España",
-  whoText:"Soy futbolista y creo páginas web. Hice Radar para ayudar a dejar de pagar lo que ya no usas. Es un proyecto personal, gratuito, y todo el código es público.",
+  whoRole:"Futbolista semiprofesional y fundador de proyectos digitales",
+  whoText:"Creé Radar porque vi a mucha gente de mi entorno pagar cada mes suscripciones que ya no usaba sin darse cuenta. Quería una herramienta sencilla, gratuita y que respetara la privacidad.",
+  whoProjects:"También dirijo <a href=\"https://nextlevelplayerai.com/\" target=\"_blank\" rel=\"noopener\">Next Level Player</a>, que ayuda a futbolistas amateurs a tener una imagen profesional, y <a href=\"https://nuvorastudio.es/\" target=\"_blank\" rel=\"noopener\">Nuvora Studio</a>, estudio de diseño web para negocios, con la ayuda de <a href=\"https://www.instagram.com/awra_studios\" target=\"_blank\" rel=\"noopener\">Awra Studios</a>, creative & AI director.",
   whoCode:"Ver el código en GitHub", whoMail:"Escríbeme",
   locale:"es-ES"
 }};
@@ -179,6 +181,7 @@ function applyLang(){
   document.querySelectorAll("[data-i]").forEach(el=>{ const v=t()[el.dataset.i]; if(typeof v==="string") el.textContent=v; });
   document.querySelectorAll("#langGroup button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang===lang)));
   document.getElementById("langGroup").setAttribute("aria-label", t().langLabel);
+  if($("whoProjects")) $("whoProjects").innerHTML = t().whoProjects;
   if(typeof netBadge==="function") netBadge();
   if($("mlist") && $("mlist").children.length){ buildManual(); manualTotal(); }
   if(lastData) render(lastData, false);
