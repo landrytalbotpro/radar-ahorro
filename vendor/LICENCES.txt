@@ -1,0 +1,5 @@
+Bibliothèques et polices incluses dans Radar :
+- pdf.js 3.11.174 (Mozilla) — Apache License 2.0 — https://github.com/mozilla/pdf.js
+- SheetJS Community Edition 0.18.5 — Apache License 2.0 — https://sheetjs.com
+- Bricolage Grotesque — SIL Open Font License 1.1 — via Fontsource
+- Atkinson Hyperlegible (Braille Institute) — SIL Open Font License 1.1 — via Fontsource
