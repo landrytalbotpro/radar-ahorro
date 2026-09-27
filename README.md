@@ -30,6 +30,11 @@ Tout le code est ici : vérifie par toi-même qu'aucune donnée n'est envoyée.
 
 Proyecto personal de Landry Talbot Antoinette (Asturias). Beta gratuita.
 
-## Licencia
+## Licencia / Licence
 
-MIT — ver `LICENSE`.
+[PolyForm Noncommercial 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0) — ver `LICENSE`.
+
+- **ES** · Puedes ver, verificar y usar este código para fines personales o no comerciales. Cualquier uso comercial requiere el permiso del autor: landrytalbotpro@gmail.com
+- **FR** · Tu peux lire, vérifier et utiliser ce code à des fins personnelles ou non commerciales. Tout usage commercial nécessite l'accord de l'auteur : landrytalbotpro@gmail.com
+
+Las bibliotecas de `vendor/` y las tipografías de `fonts/` conservan sus propias licencias (Apache 2.0 y OFL).
