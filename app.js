@@ -10,7 +10,7 @@ fr:{
   dropHint:"PDF, CSV ou Excel, un ou plusieurs mois. Plus il y a de mois, plus la détection est fiable.",
   choose:"Choisir un fichier",
   paste:"Coller le texte du relevé",
-  demo:"Essayer avec un relevé d'exemple",
+  demo:"Voir un exemple, sans rien déposer",
   privacy:"Ton relevé ne quitte jamais ton appareil : tout est analysé dans ton navigateur, rien n'est envoyé ni enregistré.",
   pasteLabel:"Colle ici les lignes de ton relevé, copiées depuis ta banque en ligne ou ton PDF",
   analyze:"Analyser",
@@ -71,6 +71,19 @@ fr:{
   fbSending:"Envoi…", fbThanks:"Merci ! Ton avis est bien reçu.", fbError:"L'envoi a échoué. Vérifie ta connexion et réessaie.",
   footLocal:"ton relevé est analysé sur ton appareil, jamais envoyé",
   footPrivacy:"Confidentialité et mentions légales",
+  trustTitle:"✈️ Fais le test du mode avion.",
+  trustText:"Active le mode avion, puis dépose ton relevé : Radar fonctionne quand même. C'est la preuve que rien ne sort de ton téléphone.",
+  netOn:"En ligne", netOff:"Hors ligne ✓ rien ne peut sortir",
+  manual:"Sans relevé : cocher mes abonnements",
+  manualTitle:"Coche ce que tu paies",
+  manualHint:"Aucune donnée bancaire : coche tes abonnements et ajuste les prix (indicatifs) si besoin.",
+  manualTotal:"Total :",
+  manualGo:"Voir mon résultat",
+  manualMeta:"Ajouté à la main",
+  perMonthShort:"/ mois",
+  whoTitle:"Fait par Landry, dans les Asturies",
+  whoText:"Je suis footballeur et je crée des sites web. J'ai fait Radar pour aider chacun à arrêter de payer ce qu'il n'utilise plus. C'est un projet personnel, gratuit, et tout le code est public.",
+  whoCode:"Voir le code sur GitHub", whoMail:"M'écrire",
   locale:"fr-FR"
 },
 es:{
@@ -80,7 +93,7 @@ es:{
   dropHint:"PDF, CSV o Excel, de uno o varios meses. Cuantos más meses, más fiable es la detección.",
   choose:"Elegir un archivo",
   paste:"Pegar el texto del extracto",
-  demo:"Probar con un extracto de ejemplo",
+  demo:"Ver un ejemplo, sin subir nada",
   privacy:"Tu extracto nunca sale de tu dispositivo: todo se analiza en tu navegador, no se envía ni se guarda nada.",
   pasteLabel:"Pega aquí los movimientos de tu extracto, copiados de tu banca online o de tu PDF",
   analyze:"Analizar",
@@ -141,6 +154,19 @@ es:{
   fbSending:"Enviando…", fbThanks:"¡Gracias! Hemos recibido tu opinión.", fbError:"No se ha podido enviar. Revisa tu conexión y vuelve a intentarlo.",
   footLocal:"tu extracto se analiza en tu dispositivo, nunca se envía",
   footPrivacy:"Privacidad y aviso legal",
+  trustTitle:"✈️ Haz la prueba del modo avión.",
+  trustText:"Activa el modo avión y sube tu extracto: Radar funciona igual. Es la prueba de que nada sale de tu móvil.",
+  netOn:"Conectado", netOff:"Sin conexión ✓ nada puede salir",
+  manual:"Sin extracto: marcar mis suscripciones",
+  manualTitle:"Marca lo que pagas",
+  manualHint:"Sin datos bancarios: marca tus suscripciones y ajusta los precios (orientativos) si hace falta.",
+  manualTotal:"Total:",
+  manualGo:"Ver mi resultado",
+  manualMeta:"Añadido a mano",
+  perMonthShort:"/ mes",
+  whoTitle:"Hecho por Landry, en Asturias",
+  whoText:"Soy futbolista y creo páginas web. Hice Radar para ayudar a dejar de pagar lo que ya no usas. Es un proyecto personal, gratuito, y todo el código es público.",
+  whoCode:"Ver el código en GitHub", whoMail:"Escríbeme",
   locale:"es-ES"
 }};
 
@@ -153,6 +179,8 @@ function applyLang(){
   document.querySelectorAll("[data-i]").forEach(el=>{ const v=t()[el.dataset.i]; if(typeof v==="string") el.textContent=v; });
   document.querySelectorAll("#langGroup button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang===lang)));
   document.getElementById("langGroup").setAttribute("aria-label", t().langLabel);
+  if(typeof netBadge==="function") netBadge();
+  if($("mlist") && $("mlist").children.length){ buildManual(); manualTotal(); }
   if(lastData) render(lastData, false);
 }
 document.querySelectorAll("#langGroup button").forEach(b=>b.addEventListener("click",()=>{
@@ -468,7 +496,7 @@ function itemRow(it, withToggle){
   const tags = [];
   tags.push(`<span class="tag">${t().cats[it.cat]||it.cat}</span>`);
   if(it.rise) tags.push(`<span class="tag warn">${t().rose(it.rise)}</span>`);
-  const meta = it.estimated ? t().once : t().times(it.count);
+  const meta = it.manual ? t().manualMeta : it.estimated ? t().once : t().times(it.count);
   li.innerHTML = `
     <div><div class="name"></div><div class="meta">${tags.join("")}${meta}</div></div>
     <div class="price"><b>${fmt(it.annual)} ${t().year}</b><span>${fmt(it.monthly)} ${t().month}</span></div>`;
@@ -830,6 +858,46 @@ function demoLines(){
   return L;
 }
 $("demoBtn").addEventListener("click",()=>run(demoLines()));
+
+/* ---------- Mode manuel : sans relevé ---------- */
+const MANUAL = [
+ ["Netflix","video",13.99],["Spotify","music",11.99],["Disney+","video",9.99],["Amazon Prime","video",4.99],
+ ["Max","video",9.99],["YouTube Premium","video",13.99],["DAZN","video",19.99],["Movistar Plus+","video",10],
+ ["Canal+","video",19.99],["Filmin","video",7.99],["Apple (iCloud, App Store)","cloud",2.99],["Google One","cloud",1.99],
+ ["Xbox Game Pass","games",14.99],["PlayStation Plus","games",8.99],["ChatGPT","software",22.99],["Microsoft 365","software",10],
+ ["Adobe","software",12.09],["Canva","software",12],["Audible","books",9.99],["Duolingo","apps",7.99],
+ ["Tinder","apps",14.99],["gymName","gym",29.99],["insName","insurance",7.99]
+];
+function manualName(n){ return n==="gymName" ? t().gymName : n==="insName" ? (lang==="es"?"Seguro de móvil":"Assurance mobile") : n; }
+function buildManual(){
+  const ul = $("mlist"); if(ul.children.length) { ul.querySelectorAll("[data-mname]").forEach(l=>l.firstChild.nodeValue=manualName(l.dataset.mname)); ul.querySelectorAll(".cat").forEach(c=>c.textContent=t().cats[c.dataset.cat]||""); ul.querySelectorAll(".pm").forEach(x=>x.textContent=t().perMonthShort); return; }
+  MANUAL.forEach(([n,c,p],i)=>{
+    const li = document.createElement("li"); li.className="mrow";
+    li.innerHTML = `<input type="checkbox" id="m${i}"><label for="m${i}" data-mname="${n}">x<span class="cat" data-cat="${c}"></span></label><span class="mprice"><input type="number" inputmode="decimal" min="0" step="0.01" value="${p}" aria-label="€"> € <span class="pm"></span></span>`;
+    li.querySelector("label").firstChild.nodeValue = manualName(n);
+    li.querySelector(".cat").textContent = t().cats[c]||"";
+    li.querySelector(".pm").textContent = t().perMonthShort;
+    li.addEventListener("input", manualTotal); li.addEventListener("change", manualTotal);
+    ul.append(li);
+  });
+}
+function manualPicked(){
+  return [...$("mlist").children].map((li,i)=>({li,i})).filter(o=>o.li.querySelector("input[type=checkbox]").checked)
+    .map(({li,i})=>{ const [n,c]=MANUAL[i]; const p=Math.max(0,parseFloat(li.querySelector("input[type=number]").value)||0);
+      return {id:"m:"+n, type:c==="insurance"?"insurance":"sub", cat:c, name:manualName(n), annual:p*12, monthly:p, count:0, estimated:false, rise:0, total:p, manual:true}; });
+}
+function manualTotal(){ const s = manualPicked().reduce((a,b)=>a+b.annual,0); $("mTotal").textContent = fmt(s)+" "+t().year; }
+$("manualToggle").addEventListener("click",()=>{ buildManual(); manualTotal(); $("manualBox").hidden = !$("manualBox").hidden; if(!$("manualBox").hidden) $("manualBox").scrollIntoView({behavior:"smooth",block:"start"}); });
+$("manualGo").addEventListener("click",()=>{
+  const items = manualPicked().sort((a,b)=>b.annual-a.annual); if(!items.length) return;
+  lastFormats = "manuel"; lastTxCount = 0;
+  selected.clear(); lastData = {items, nMonths:12};
+  $("intro").hidden = true; $("results").hidden = false; render(lastData, true); window.scrollTo({top:0});
+});
+
+/* ---------- Indicateur « hors ligne » (preuve que rien ne sort) ---------- */
+function netBadge(){ const b=$("netBadge"); const off=!navigator.onLine; b.textContent = off ? t().netOff : t().netOn; b.classList.toggle("off", off); }
+window.addEventListener("online", netBadge); window.addEventListener("offline", netBadge);
 
 applyLang();
 if("serviceWorker" in navigator && location.protocol==="https:"){ window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }

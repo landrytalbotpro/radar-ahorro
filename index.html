@@ -126,6 +126,31 @@ dialog::backdrop{background:rgba(10,20,26,.55)}
   .save .amt{font-size:1.7rem}
 }
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+/* confiance, mode manuel */
+.trust{display:flex;gap:.75rem;align-items:flex-start;background:var(--water-soft);border-radius:14px;padding:.85rem 1rem;margin:0 0 1rem}
+.trust p{margin:0;font-size:.95rem}
+.net{flex:none;font:700 .78rem var(--body);border-radius:999px;padding:.2rem .6rem;background:var(--surface);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
+.net.off{background:var(--water);color:var(--paper);border-color:transparent}
+.btn.strong{border-color:var(--water);color:var(--water)}
+.manual{margin-top:1rem;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.2rem}
+.manual h2{margin-top:0}
+.mlist{list-style:none;margin:0;padding:0;display:grid;gap:.35rem}
+.mrow{display:grid;grid-template-columns:auto 1fr auto;gap:.6rem;align-items:center;padding:.45rem .5rem;border-radius:10px}
+.mrow:has(input[type=checkbox]:checked){background:var(--water-soft)}
+.mrow input[type=checkbox]{width:1.15rem;height:1.15rem;accent-color:var(--water);margin:0}
+.mrow label{font-weight:700;cursor:pointer}
+.mrow .cat{display:block;font-weight:400;color:var(--muted);font-size:.82rem}
+.mprice{display:flex;align-items:center;gap:.3rem;color:var(--muted);font-size:.88rem;white-space:nowrap}
+.mprice input{width:4.6rem;border:1.5px solid var(--line);border-radius:8px;padding:.35rem .45rem;font:1rem var(--body);background:var(--paper);color:var(--ink);text-align:right}
+.mfoot{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1rem;border-top:1px solid var(--line);padding-top:1rem}
+.mfoot p{margin:0}
+.mfoot b{font-family:var(--display);font-size:1.5rem;color:var(--leak)}
+/* qui est derrière */
+.who{display:flex;gap:1rem;align-items:flex-start;margin-top:3rem;padding:1.2rem;background:var(--surface);border:1px solid var(--line);border-radius:18px}
+.who img{border-radius:50%;flex:none;object-fit:cover}
+.who h2{margin:0 0 .2rem;font-size:1.2rem}
+.who p{margin:0 0 .4rem;color:var(--muted);font-size:.95rem}
+.who-links a{color:var(--water);font-weight:700}
 /* bêta, retours, pied de page */
 .beta{font:700 .7rem var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--water);background:var(--water-soft);border-radius:999px;padding:.12rem .5rem;margin-left:.15rem}
 .fb{margin-top:2.75rem;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.4rem}
@@ -165,6 +190,11 @@ dialog::backdrop{background:rgba(10,20,26,.55)}
       <h1 data-i="title"></h1>
       <p class="lead" data-i="lead"></p>
 
+      <div class="trust" id="trust">
+        <span class="net" id="netBadge"></span>
+        <p><b data-i="trustTitle"></b> <span data-i="trustText"></span></p>
+      </div>
+
       <label class="drop" id="drop">
         <input type="file" id="file" accept=".pdf,.csv,.xlsx,.xls,.ods,.txt,application/pdf,text/csv,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple>
         <strong data-i="drop"></strong>
@@ -173,8 +203,19 @@ dialog::backdrop{background:rgba(10,20,26,.55)}
       </label>
 
       <div class="alt">
+        <button type="button" class="btn ghost strong" id="demoBtn" data-i="demo"></button>
+        <button type="button" class="btn ghost" id="manualToggle" data-i="manual"></button>
         <button type="button" class="btn ghost" id="pasteToggle" data-i="paste"></button>
-        <button type="button" class="btn ghost" id="demoBtn" data-i="demo"></button>
+      </div>
+
+      <div id="manualBox" class="manual" hidden>
+        <h2 data-i="manualTitle"></h2>
+        <p class="sub" data-i="manualHint"></p>
+        <ul class="mlist" id="mlist"></ul>
+        <div class="mfoot">
+          <p><span data-i="manualTotal"></span> <b id="mTotal">0</b></p>
+          <button type="button" class="btn" id="manualGo" data-i="manualGo"></button>
+        </div>
       </div>
 
       <div id="pasteBox" hidden>
@@ -254,6 +295,14 @@ dialog::backdrop{background:rgba(10,20,26,.55)}
       <button type="button" class="btn ghost" id="restart" data-i="restart"></button>
     </section>
   </main>
+  <section class="who" aria-labelledby="whoTitle">
+    <img src="icons/landry.jpg" width="72" height="72" alt="Landry" loading="lazy">
+    <div>
+      <h2 id="whoTitle" data-i="whoTitle"></h2>
+      <p data-i="whoText"></p>
+      <p class="who-links"><a href="https://github.com/landrytalbotpro/radar-ahorro" target="_blank" rel="noopener" data-i="whoCode"></a> · <a href="mailto:landrytalbotpro@gmail.com" data-i="whoMail"></a></p>
+    </div>
+  </section>
   <footer class="site-foot">
     <span>© 2026 Radar · <span data-i="footLocal"></span></span>
     <a href="privacidad.html" data-i="footPrivacy"></a>

@@ -23,11 +23,12 @@ Tout le code est ici : vérifie par toi-même qu'aucune donnée n'est envoyée.
 | `config.js` | Ajustes (formulario de opinión) |
 | `sw.js` | Funcionamiento sin conexión |
 | `_headers` | Cabeceras de seguridad (Cloudflare Pages) |
-| `vendor/` | pdf.js (Mozilla) y SheetJS, sin modificar — ver `vendor/LICENCES.txt` |
+| `vendor/` | pdf.js 3.11.174 (Mozilla) y SheetJS 0.18.5, versiones oficiales sin modificar — ver `vendor/LICENCES.txt` |
+| `icons/`, `fonts/` | Iconos y tipografías (Bricolage Grotesque, Atkinson Hyperlegible — licencia OFL) |
 
 ## Autor
 
-Proyecto personal de Landry Talbot Antoinette (Gijón). Beta gratuita.
+Proyecto personal de Landry Talbot Antoinette (Asturias). Beta gratuita.
 
 ## Licencia
 
