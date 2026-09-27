@@ -28,7 +28,7 @@ Tout le code est ici : vérifie par toi-même qu'aucune donnée n'est envoyée.
 
 ## Autor
 
-Proyecto personal de Landry Talbot Antoinette (Asturias). Beta gratuita.
+Proyecto personal de Landry Talbot Antoinette (España). Beta gratuita.
 
 ## Licencia / Licence
 

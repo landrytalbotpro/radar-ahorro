@@ -81,7 +81,7 @@ fr:{
   manualGo:"Voir mon résultat",
   manualMeta:"Ajouté à la main",
   perMonthShort:"/ mois",
-  whoTitle:"Fait par Landry, dans les Asturies",
+  whoTitle:"Fait par Landry, en Espagne",
   whoText:"Je suis footballeur et je crée des sites web. J'ai fait Radar pour aider chacun à arrêter de payer ce qu'il n'utilise plus. C'est un projet personnel, gratuit, et tout le code est public.",
   whoCode:"Voir le code sur GitHub", whoMail:"M'écrire",
   locale:"fr-FR"
@@ -164,7 +164,7 @@ es:{
   manualGo:"Ver mi resultado",
   manualMeta:"Añadido a mano",
   perMonthShort:"/ mes",
-  whoTitle:"Hecho por Landry, en Asturias",
+  whoTitle:"Hecho por Landry, en España",
   whoText:"Soy futbolista y creo páginas web. Hice Radar para ayudar a dejar de pagar lo que ya no usas. Es un proyecto personal, gratuito, y todo el código es público.",
   whoCode:"Ver el código en GitHub", whoMail:"Escríbeme",
   locale:"es-ES"
