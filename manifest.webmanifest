@@ -1,0 +1,16 @@
+{
+  "name": "Radar : tes abonnements à la loupe",
+  "short_name": "Radar",
+  "description": "Trouve les abonnements oubliés, doublons, hausses de prix et frais bancaires dans ton relevé.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EDF1F3",
+  "theme_color": "#13202A",
+  "lang": "fr",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
