@@ -1,5 +1,5 @@
 /* Radar : fonctionne hors ligne une fois ouvert. Rien n'est envoyé : ce fichier ne fait que garder une copie du site. */
-const VERSION = "radar-v5";
+const VERSION = "radar-v7";
 const CORE = ["./","index.html","app.js","config.js","manifest.webmanifest","privacidad.html",
   "icons/icon.svg","icons/landry.jpg","icons/icon-32.png","icons/icon-180.png","icons/icon-192.png","icons/icon-512.png",
   "fonts/bricolage-grotesque-latin-500-normal.woff2","fonts/bricolage-grotesque-latin-700-normal.woff2","fonts/bricolage-grotesque-latin-800-normal.woff2",

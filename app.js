@@ -50,8 +50,13 @@ fr:{
   dlgTitle:(s)=>`Lettre pour ${s}`,
   dlgTip:"Essaie d'abord de résilier depuis ton compte en ligne, dans les paramètres de l'abonnement : c'est souvent immédiat. Sinon, envoie cette lettre par e-mail ou en recommandé.",
   feeTip:"Envoie ce message à ta banque ou à ton conseiller. Les banques acceptent souvent de rembourser des frais quand on le demande.",
-  yourName:"Ton nom",
-  yourRef:"E-mail ou numéro client",
+  yourName:"Ton nom (facultatif)",
+  yourRef:"E-mail ou n° client (facultatif)",
+  fieldsPriv:"Seulement pour remplir la lettre : ces infos restent sur ton appareil et ne sont envoyées nulle part.",
+  mailOpen:"Ouvrir dans mon e-mail",
+  online:(s)=>`Résilier en ligne sur le site de ${s}`,
+  onlineTip:"Le plus rapide : résilie directement dans ton compte, en 2 minutes. La lettre reste disponible si besoin.",
+  orLetter:"ou, si ça ne marche pas, envoie cette lettre :",
   copy:"Copier la lettre",
   copied:"Lettre copiée",
   close:"Fermer",
@@ -134,8 +139,13 @@ es:{
   dlgTitle:(s)=>`Carta para ${s}`,
   dlgTip:"Prueba primero a darte de baja desde tu cuenta online, en los ajustes de la suscripción: suele ser inmediato. Si no, envía esta carta por correo electrónico o burofax.",
   feeTip:"Envía este mensaje a tu banco o a tu gestor. Los bancos suelen devolver comisiones cuando se les pide.",
-  yourName:"Tu nombre",
-  yourRef:"Correo o número de cliente",
+  yourName:"Tu nombre (opcional)",
+  yourRef:"Correo o n.º de cliente (opcional)",
+  fieldsPriv:"Solo para rellenar la carta: estos datos se quedan en tu dispositivo y no se envían a ningún sitio.",
+  mailOpen:"Abrir en mi correo",
+  online:(s)=>`Darse de baja en la web de ${s}`,
+  onlineTip:"Lo más rápido: date de baja directamente en tu cuenta, en 2 minutos. La carta sigue disponible si la necesitas.",
+  orLetter:"o, si no funciona, envía esta carta:",
   copy:"Copiar la carta",
   copied:"Carta copiada",
   close:"Cerrar",
@@ -596,7 +606,38 @@ function render(data, animate=true){
 }
 
 /* ---------- Lettres ---------- */
+/* Pages officielles de gestion / résiliation (compte de l'utilisateur) */
+const CANCEL = {
+ "Netflix":"https://www.netflix.com/cancelplan",
+ "Spotify":"https://www.spotify.com/account/subscription/",
+ "Disney+":"https://www.disneyplus.com/account",
+ "Amazon Prime":()=>lang==="es"?"https://www.amazon.es/gp/primecentral":"https://www.amazon.fr/gp/primecentral",
+ "Max":"https://www.max.com/account",
+ "YouTube Premium":"https://www.youtube.com/paid_memberships",
+ "DAZN":"https://www.dazn.com/myaccount",
+ "Apple (iCloud, App Store)":"https://support.apple.com/HT202039",
+ "Google One":"https://one.google.com/settings",
+ "Xbox Game Pass":"https://account.microsoft.com/services",
+ "Microsoft 365":"https://account.microsoft.com/services",
+ "PlayStation Plus":"https://www.playstation.com/support/store/cancel-ps-store-subscription/",
+ "Adobe":"https://account.adobe.com/plans",
+ "Dropbox":"https://www.dropbox.com/account/plan",
+ "ChatGPT":"https://help.openai.com/en/articles/7232927-how-do-i-cancel-my-chatgpt-plus-subscription",
+ "Claude":"https://claude.ai/settings/billing",
+ "Canva":"https://www.canva.com/settings/billing-and-teams",
+ "LinkedIn Premium":"https://www.linkedin.com/premium/manage/",
+ "Crunchyroll":"https://www.crunchyroll.com/account/membership",
+ "Deezer":"https://www.deezer.com/account/subscription",
+ "Kindle Unlimited":()=>lang==="es"?"https://www.amazon.es/kindle-dbs/ku/ku-central":"https://www.amazon.fr/kindle-dbs/ku/ku-central",
+ "Audible":()=>lang==="es"?"https://www.audible.es/account/overview":"https://www.audible.fr/account/overview"
+};
+const cancelUrl = it => { const u = it.type!=="fees" && CANCEL[nameOf(it)]; return typeof u==="function" ? u() : (u||""); };
 let current = null;
+function updateMail(){
+  const txt = $("letter").value, lines = txt.split("\n");
+  const s0 = lines[0].replace(/^(Objet|Asunto)\s*:\s*/,""); const subj = s0.charAt(0).toUpperCase()+s0.slice(1);
+  $("mailBtn").href = "mailto:?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(lines.slice(1).join("\n").trim());
+}
 function buildLetter(){
   if(!current) return;
   const name = $("fName").value.trim() || t().phName;
@@ -605,11 +646,15 @@ function buildLetter(){
   $("letter").value = current.type==="fees"
     ? t().letterFee(fmt(current.total), ref, name, date)
     : t().letterSub(nameOf(current), ref, name, date);
+  updateMail();
 }
 function openLetter(it){
   current = it;
   $("dlgTitle").textContent = t().dlgTitle(nameOf(it));
-  $("dlgTip").textContent = it.type==="fees" ? t().feeTip : t().dlgTip;
+  const url = cancelUrl(it);
+  $("dlgTip").textContent = it.type==="fees" ? t().feeTip : (url ? t().onlineTip : t().dlgTip);
+  $("onlineBtn").hidden = !url; $("orLine").hidden = !url;
+  if(url){ $("onlineBtn").href = url; $("onlineBtn").textContent = t().online(nameOf(it)); }
   $("copyBtn").textContent = t().copy;
   buildLetter();
   if($("dlg").showModal) $("dlg").showModal(); else $("dlg").setAttribute("open","");
