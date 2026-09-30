@@ -586,7 +586,7 @@ function fbSummary(){
     annual:Math.round(check.reduce((a,b)=>a+b.annual,0)), months:lastData.nMonths};
 }
 function renderFeedback(){
-  const on = !!CFG.formId && !!lastData;
+  const on = !!(CFG.accessKey||CFG.formId) && !!lastData;
   $("fb").hidden = !on;
   if(!on) return;
   const s = fbSummary();
@@ -605,8 +605,11 @@ $("fbForm").addEventListener("submit", async e=>{
   if(!payload.email) delete payload.email;
   $("fbBtn").disabled = true; st.className=""; st.textContent = t().fbSending;
   try{
-    const r = await fetch("https://formspree.io/f/"+encodeURIComponent(CFG.formId), {method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"}, body:JSON.stringify(payload)});
-    if(!r.ok) throw new Error(r.status);
+    const r = CFG.accessKey
+      ? await fetch("https://api.web3forms.com/submit", {method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"}, body:JSON.stringify({access_key:CFG.accessKey, subject:payload._subject, from_name:"Radar", ...payload, _subject:undefined})})
+      : await fetch("https://formspree.io/f/"+encodeURIComponent(CFG.formId), {method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"}, body:JSON.stringify(payload)});
+    const j = await r.json().catch(()=>({}));
+    if(!r.ok || j.success===false) throw new Error(r.status);
     f.reset(); st.className="ok"; st.textContent=t().fbThanks;
   }catch(err){ st.className="ko"; st.textContent=t().fbError; }
   finally{ $("fbBtn").disabled = false; }
