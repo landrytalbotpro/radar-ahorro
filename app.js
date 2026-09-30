@@ -28,6 +28,9 @@ fr:{
   insDup:(names)=>`Plusieurs assurances : ${names.join(", ")}. Vérifie que tu n'es pas assuré deux fois pour la même chose (téléphone, carte bancaire, habitation).`,
   rise:(name,pct)=>`${name} a augmenté de ${pct} % pendant la période analysée.`,
   fees:(amt)=>`Tu paies environ ${amt} par an en frais bancaires. Beaucoup de banques en ligne n'en facturent aucun.`,
+  telDup:(names)=>`Plusieurs opérateurs télécom : ${names.join(", ")}. Vérifie que tu ne paies pas une ligne ou une box que tu n'utilises plus.`,
+  telHigh:(amt)=>`Ton téléphone et ta box te coûtent environ ${amt} par an. Les offres baissent souvent : compare avant de renouveler (attention à l'engagement).`,
+  telTip:"Attention à l'engagement : résilier avant la fin peut coûter des frais. Pour changer d'opérateur, demande ton code RIO (appelle le 3179) : la résiliation est alors automatique et tu gardes ton numéro.",
   listTitle:"À vérifier",
   listHint:"Abonnements et prélèvements qui reviennent. Décide ligne par ligne.",
   fixedTitle:"Charges fixes à comparer",
@@ -39,7 +42,7 @@ fr:{
   once:"Vu une seule fois : montant annuel estimé",
   times:(n)=>`${n} prélèvements sur la période`,
   rose:(p)=>`+${p} %`,
-  cats:{video:"vidéo",music:"musique",cloud:"stockage",gym:"salle de sport",games:"jeux",software:"logiciels",books:"lecture",apps:"applis",insurance:"assurance",fees:"frais bancaires",recurring:"récurrent",fixed:"charge fixe"},
+  cats:{video:"vidéo",music:"musique",cloud:"stockage",gym:"salle de sport",games:"jeux",software:"logiciels",books:"lecture",apps:"applis",insurance:"assurance",telecom:"téléphone / internet",fees:"frais bancaires",recurring:"récurrent",fixed:"charge fixe"},
   catsPlural:{video:"de vidéo",music:"de musique",cloud:"de stockage en ligne",gym:"de salle de sport",games:"de jeux",software:"de logiciels",books:"de lecture",apps:"d'applis"},
   feesName:"Frais bancaires",
   gymName:"Salle de sport",
@@ -62,6 +65,7 @@ fr:{
   close:"Fermer",
   langLabel:"Langue",
   phName:"[ton nom]", phRef:"[e-mail ou numéro client]",
+  letterTel:(s,ref,name,date)=>`Objet : résiliation de mon abonnement ${s} (forfait mobile / box internet)\n\n${date}\n\nMadame, Monsieur,\n\nJe vous informe de ma décision de résilier mon abonnement ${s}, associé à : ${ref} (numéro de ligne ou de client).\n\nJe vous remercie de prendre en compte cette résiliation dans les meilleurs délais, de cesser tout prélèvement à compter de sa date d'effet, de m'indiquer si je dois restituer du matériel (box, décodeur) et de m'envoyer une confirmation écrite.\n\nCordialement,\n${name}`,
   letterSub:(s,ref,name,date)=>`Objet : résiliation de mon abonnement ${s}\n\n${date}\n\nMadame, Monsieur,\n\nJe vous informe de ma décision de résilier mon abonnement ${s}, associé à : ${ref}.\n\nJe vous remercie de prendre en compte cette résiliation dans les meilleurs délais, de cesser tout prélèvement à compter de sa date d'effet et de m'envoyer une confirmation écrite.\n\nCordialement,\n${name}`,
   letterFee:(amt,ref,name,date)=>`Objet : demande de remboursement de frais bancaires\n\n${date}\n\nMadame, Monsieur,\n\nEn consultant mes relevés, j'ai constaté des frais bancaires pour un total de ${amt} sur les derniers mois (compte associé à : ${ref}).\n\nJe vous demande de bien vouloir étudier le remboursement de ces frais et de m'indiquer comment les éviter à l'avenir, ou de me proposer une formule sans frais de tenue de compte.\n\nCordialement,\n${name}`,
   fbTitle:"Radar a-t-il bien lu ton relevé ?",
@@ -117,6 +121,9 @@ es:{
   insDup:(names)=>`Varios seguros: ${names.join(", ")}. Comprueba que no estás asegurado dos veces para lo mismo (móvil, tarjeta, hogar).`,
   rise:(name,pct)=>`${name} ha subido un ${pct} % durante el periodo analizado.`,
   fees:(amt)=>`Pagas unos ${amt} al año en comisiones. Muchos bancos online no cobran ninguna.`,
+  telDup:(names)=>`Varias compañías de teléfono: ${names.join(", ")}. Comprueba que no pagas una línea o una fibra que ya no usas.`,
+  telHigh:(amt)=>`Tu móvil y tu fibra te cuestan unos ${amt} al año. Las tarifas bajan a menudo: compara antes de renovar (ojo a la permanencia).`,
+  telTip:"Ojo a la permanencia: darte de baja antes de que termine puede tener penalización. Si cambias de compañía con portabilidad, la baja es automática y conservas tu número.",
   listTitle:"Por revisar",
   listHint:"Suscripciones y cargos que se repiten. Decide uno por uno.",
   fixedTitle:"Gastos fijos para comparar",
@@ -128,7 +135,7 @@ es:{
   once:"Visto una sola vez: importe anual estimado",
   times:(n)=>`${n} cargos en el periodo`,
   rose:(p)=>`+${p} %`,
-  cats:{video:"vídeo",music:"música",cloud:"almacenamiento",gym:"gimnasio",games:"juegos",software:"software",books:"lectura",apps:"apps",insurance:"seguro",fees:"comisiones",recurring:"recurrente",fixed:"gasto fijo"},
+  cats:{video:"vídeo",music:"música",cloud:"almacenamiento",gym:"gimnasio",games:"juegos",software:"software",books:"lectura",apps:"apps",insurance:"seguro",telecom:"móvil / fibra",fees:"comisiones",recurring:"recurrente",fixed:"gasto fijo"},
   catsPlural:{video:"de vídeo",music:"de música",cloud:"de almacenamiento en la nube",gym:"de gimnasio",games:"de juegos",software:"de software",books:"de lectura",apps:"de apps"},
   feesName:"Comisiones bancarias",
   gymName:"Gimnasio",
@@ -151,6 +158,7 @@ es:{
   close:"Cerrar",
   langLabel:"Idioma",
   phName:"[tu nombre]", phRef:"[correo o número de cliente]",
+  letterTel:(s,ref,name,date)=>`Asunto: baja de mi contrato con ${s} (móvil / fibra)\n\n${date}\n\nMuy señores míos:\n\nLes comunico mi decisión de dar de baja mi contrato con ${s}, asociado a: ${ref} (número de línea o de cliente).\n\nLes ruego que tramiten la baja a la mayor brevedad, que no realicen más cargos a partir de la fecha de efecto, que me indiquen si debo devolver algún equipo (router, decodificador) y que me envíen confirmación por escrito.\n\nAtentamente,\n${name}`,
   letterSub:(s,ref,name,date)=>`Asunto: baja de mi suscripción a ${s}\n\n${date}\n\nMuy señores míos:\n\nLes comunico mi decisión de dar de baja mi suscripción a ${s}, asociada a: ${ref}.\n\nLes ruego que tramiten la baja a la mayor brevedad, que no realicen más cargos a partir de la fecha de efecto y que me envíen confirmación por escrito.\n\nAtentamente,\n${name}`,
   letterFee:(amt,ref,name,date)=>`Asunto: solicitud de devolución de comisiones\n\n${date}\n\nMuy señores míos:\n\nRevisando mis extractos, he comprobado comisiones por un total de ${amt} en los últimos meses (cuenta asociada a: ${ref}).\n\nLes solicito que estudien la devolución de estas comisiones y me indiquen cómo evitarlas en el futuro, o que me ofrezcan una cuenta sin comisiones de mantenimiento.\n\nAtentamente,\n${name}`,
   fbTitle:"¿Radar ha leído bien tu extracto?",
@@ -223,7 +231,17 @@ const SUBS = [
 const GYM = ["GIMNASIO","GYM","SALLE DE SPORT","FITNESS"].map(clean);
 const FEES = ["COMISION","COMMISSION","FRAIS","COTISATION","MANTENIMIENTO","AGIOS","DESCUBIERTO","INTERETS DEBITEURS","CUOTA TARJETA","CUOTA ANUAL","TENUE DE COMPTE","COMISIONES"].map(clean);
 const INS = ["SEGURO","ASSURANCE","MUTUELLE","ASEGURADORA","INSURANCE","ASSUR"].map(clean);
-const FIXED = ["ALQUILER","LOYER","HIPOTECA","PRESTAMO","PRET","CREDIT IMMO","IBERDROLA","ENDESA","NATURGY","TOTALENERGIES","EDF","ENGIE","HOLALUZ","AGUA","EAU","IMPUESTO","IMPOT","DGFIP","IBI","URSSAF","SEGURIDAD SOCIAL","TGSS","COMUNIDAD PROP","SYNDIC","ORANGE","MOVISTAR","VODAFONE","SFR","BOUYGUES","FREE MOBILE","FREE TELECOM","DIGI","LOWI","YOIGO","MASMOVIL","PEPEPHONE","SOSH","SIMYO","O2","JAZZTEL","CRECHE","GUARDERIA","COLEGIO","ECOLE"].map(clean);
+const FIXED = ["ALQUILER","LOYER","HIPOTECA","PRESTAMO","PRET","CREDIT IMMO","IBERDROLA","ENDESA","NATURGY","TOTALENERGIES","EDF","ENGIE","HOLALUZ","AGUA","EAU","IMPUESTO","IMPOT","DGFIP","IBI","URSSAF","SEGURIDAD SOCIAL","TGSS","COMUNIDAD PROP","SYNDIC","CRECHE","GUARDERIA","COLEGIO","ECOLE"].map(clean);
+const TELCO = [
+ [["MOVISTAR","TELEFONICA DE ESPANA","TELEFONICA MOVILES"],"Movistar"],[["VODAFONE"],"Vodafone"],[["ORANGE","ORANGE ESPAGNE"],"Orange"],
+ [["YOIGO"],"Yoigo"],[["MASMOVIL","MAS MOVIL"],"MásMóvil"],[["JAZZTEL"],"Jazztel"],[["PEPEPHONE"],"Pepephone"],[["LOWI"],"Lowi"],
+ [["DIGI SPAIN","DIGI MOBIL","DIGI"],"Digi"],[["SIMYO"],"Simyo"],[["O2"],"O2"],[["FINETWORK"],"Finetwork"],[["AVATEL"],"Avatel"],
+ [["EUSKALTEL"],"Euskaltel"],[["TELECABLE"],"Telecable"],[["R CABLE","RCABLE"],"R"],[["VIRGIN TELCO"],"Virgin telco"],[["ADAMO"],"Adamo"],
+ [["GUUK"],"Guuk"],[["HITS MOBILE"],"Hits Mobile"],[["LEBARA"],"Lebara"],[["LYCAMOBILE"],"Lycamobile"],
+ [["SOSH"],"Sosh"],[["RED BY SFR"],"RED by SFR"],[["SFR"],"SFR"],[["BOUYGUES"],"Bouygues Telecom"],[["B&YOU","B YOU"],"B&You"],
+ [["FREE MOBILE","FREE TELECOM","FREEBOX","FREE HAUTDEBIT","FREE HAUT DEBIT"],"Free"],[["LA POSTE MOBILE"],"La Poste Mobile"],
+ [["PRIXTEL"],"Prixtel"],[["NRJ MOBILE"],"NRJ Mobile"],[["CORIOLIS"],"Coriolis"],[["SYMA MOBILE","SYMA"],"Syma"],[["AUCHAN TELECOM"],"Auchan Telecom"],[["YOUPRICE"],"YouPrice"]
+].map(([k,n])=>({k:k.map(clean),n}));
 const INCOME = ["NOMINA","SALAIRE","SALARIO","VIREMENT DE","VIR RECU","VIREMENT RECU","TRANSFERENCIA RECIBIDA","TRANSF RECIBIDA","TRANSF. RECIBIDA","ABONO","INGRESO","DEVOLUCION","REMBOURSEMENT","REMB","CAF","PENSION","BIZUM RECIBIDO","PRESTACION","REEMBOLSO","INTERESES A FAVOR","VIR SEPA RECU","TRANSFERENCIA DE","RECARGA","TOP UP","TOP-UP","TOPUP","MONEY ADDED","RECHARGE"].map(clean);
 const SKIP = ["BIZUM","RETIRADA","CAJERO","RETRAIT","DAB","TRASPASO","SALDO","SOLDE","TOTAL"].map(clean);
 
@@ -445,6 +463,8 @@ function analyze(tx){
     if(has(x.desc,FEES)){ add("fees", {type:"fees", cat:"fees", nameKey:"feesName"}, x); return; }
     const k = normKey(x.desc) || normKey((x.more||"").split(" | ")[0]) || clean(x.desc).slice(0,20);
     if(has(x.full,INS)){ add("i:"+k, {type:"insurance", cat:"insurance", name:titleCase(k)}, x); return; }
+    const tel = TELCO.find(o=>has(x.full,o.k));
+    if(tel){ add("t:"+tel.n, {type:"telco", cat:"telecom", name:tel.n}, x); return; }
     if(has(x.full,FIXED)){ add("f:"+k, {type:"fixed", cat:"fixed", name:titleCase(k)}, x); return; }
     if(has(x.full,GYM)){ add("g:"+k, {type:"sub", cat:"gym", name:titleCase(k)}, x); return; }
     add("u:"+k, {type:"unknown", cat:"recurring", name:titleCase(k)}, x);
@@ -466,8 +486,16 @@ function analyze(tx){
     if(g.type==="insurance" || g.type==="fixed"){
       if(months<2 && nMonths>=2 && g.type==="fixed") return;
     }
+    if(g.type==="telco" && months<2 && nMonths>=2) return;
     let annual, estimated=false;
-    if(g.type==="fees"){ annual = total / nMonths * 12; }
+    const byMonth = {}; g.tx.forEach(x=>byMonth[x.key]=(byMonth[x.key]||0)+x.amt);
+    const mk = Object.keys(byMonth).map(Number).sort((a,b)=>a-b);
+    if(g.type==="telco" && months>=2){ // facture régulière, pas un achat ponctuel en boutique
+      const v=mk.map(k=>byMonth[k]).sort((a,b)=>a-b), md=v[Math.floor((v.length-1)/2)];
+      if(v.filter(x=>x>=md*0.75 && x<=md*1.35).length<2) return;
+    }
+    if(g.type==="telco"){ const sp=spanFrom(mk[0]); const vals=mk.map(k=>byMonth[k]).sort((a,b)=>a-b), med=vals[Math.floor((vals.length-1)/2)], last=byMonth[mk[mk.length-1]]; annual = months===1 ? total*12 : (last>=med*0.9 ? last : med)*12; estimated = months===1; }
+    else if(g.type==="fees"){ annual = total / nMonths * 12; }
     else if(months===1 && g.tx.length===1){ annual = amts[0]*12; estimated = true; }
     else {
       // abonnement commencé en cours de période : on compte depuis le premier prélèvement
@@ -476,7 +504,9 @@ function analyze(tx){
     }
 
     let rise = 0;
-    if(g.type!=="fees" && g.tx.length>=2){
+    if(g.type==="telco"){
+      if(mk.length>=2){ const f=byMonth[mk[0]], l=byMonth[mk[mk.length-1]]; if(l>f*1.03 && l<=f*1.8) rise=Math.round((l/f-1)*100); }
+    } else if(g.type!=="fees" && g.tx.length>=2){
       const f = g.tx[0].amt, l = g.tx[g.tx.length-1].amt;
       if(l > f*1.03 && l <= f*1.8) rise = Math.round((l/f-1)*100);
     }
@@ -587,6 +617,10 @@ function render(data, animate=true){
   const ins = check.filter(i=>i.type==="insurance");
   if(ins.length>=2) alerts.push(t().insDup(ins.map(nameOf)));
   check.filter(i=>i.rise).forEach(i=>alerts.push(t().rise(nameOf(i), i.rise)));
+  const tels = check.filter(i=>i.type==="telco");
+  if(tels.length>=2) alerts.push(t().telDup(tels.map(nameOf)));
+  const telSum = tels.reduce((a,b)=>a+b.annual,0);
+  if(telSum>=300) alerts.push(t().telHigh(fmt(telSum)));
   const fees = check.find(i=>i.type==="fees");
   if(fees) alerts.push(t().fees(fmt(fees.annual)));
   $("alerts").innerHTML = "";
@@ -645,6 +679,7 @@ function buildLetter(){
   const date = new Date().toLocaleDateString(t().locale,{day:"numeric",month:"long",year:"numeric"});
   $("letter").value = current.type==="fees"
     ? t().letterFee(fmt(current.total), ref, name, date)
+    : current.type==="telco" ? t().letterTel(nameOf(current), ref, name, date)
     : t().letterSub(nameOf(current), ref, name, date);
   updateMail();
 }
@@ -652,7 +687,7 @@ function openLetter(it){
   current = it;
   $("dlgTitle").textContent = t().dlgTitle(nameOf(it));
   const url = cancelUrl(it);
-  $("dlgTip").textContent = it.type==="fees" ? t().feeTip : (url ? t().onlineTip : t().dlgTip);
+  $("dlgTip").textContent = it.type==="fees" ? t().feeTip : it.type==="telco" ? t().telTip : (url ? t().onlineTip : t().dlgTip);
   $("onlineBtn").hidden = !url; $("orLine").hidden = !url;
   if(url){ $("onlineBtn").href = url; $("onlineBtn").textContent = t().online(nameOf(it)); }
   $("copyBtn").textContent = t().copy;
@@ -914,9 +949,9 @@ const MANUAL = [
  ["Canal+","video",19.99],["Filmin","video",7.99],["Apple (iCloud, App Store)","cloud",2.99],["Google One","cloud",1.99],
  ["Xbox Game Pass","games",14.99],["PlayStation Plus","games",8.99],["ChatGPT","software",22.99],["Microsoft 365","software",10],
  ["Adobe","software",12.09],["Canva","software",12],["Audible","books",9.99],["Duolingo","apps",7.99],
- ["Tinder","apps",14.99],["gymName","gym",29.99],["insName","insurance",7.99]
+ ["Tinder","apps",14.99],["mobName","telecom",15],["boxName","telecom",30],["gymName","gym",29.99],["insName","insurance",7.99]
 ];
-function manualName(n){ return n==="gymName" ? t().gymName : n==="insName" ? (lang==="es"?"Seguro de móvil":"Assurance mobile") : n; }
+function manualName(n){ return n==="mobName" ? (lang==="es"?"Tarifa móvil":"Forfait mobile") : n==="boxName" ? (lang==="es"?"Fibra / internet":"Box internet") : n==="gymName" ? t().gymName : n==="insName" ? (lang==="es"?"Seguro de móvil":"Assurance mobile") : n; }
 function buildManual(){
   const ul = $("mlist"); if(ul.children.length) { ul.querySelectorAll("[data-mname]").forEach(l=>l.firstChild.nodeValue=manualName(l.dataset.mname)); ul.querySelectorAll(".cat").forEach(c=>c.textContent=t().cats[c.dataset.cat]||""); ul.querySelectorAll(".pm").forEach(x=>x.textContent=t().perMonthShort); return; }
   MANUAL.forEach(([n,c,p],i)=>{
@@ -932,7 +967,7 @@ function buildManual(){
 function manualPicked(){
   return [...$("mlist").children].map((li,i)=>({li,i})).filter(o=>o.li.querySelector("input[type=checkbox]").checked)
     .map(({li,i})=>{ const [n,c]=MANUAL[i]; const p=Math.max(0,parseFloat(li.querySelector("input[type=number]").value)||0);
-      return {id:"m:"+n, type:c==="insurance"?"insurance":"sub", cat:c, name:manualName(n), annual:p*12, monthly:p, count:0, estimated:false, rise:0, total:p, manual:true}; });
+      return {id:"m:"+n, type:c==="insurance"?"insurance":c==="telecom"?"telco":"sub", cat:c, name:manualName(n), annual:p*12, monthly:p, count:0, estimated:false, rise:0, total:p, manual:true}; });
 }
 function manualTotal(){ const s = manualPicked().reduce((a,b)=>a+b.annual,0); $("mTotal").textContent = fmt(s)+" "+t().year; }
 $("manualToggle").addEventListener("click",()=>{ buildManual(); manualTotal(); $("manualBox").hidden = !$("manualBox").hidden; if(!$("manualBox").hidden) $("manualBox").scrollIntoView({behavior:"smooth",block:"start"}); });
