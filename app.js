@@ -32,7 +32,7 @@ fr:{
   telHigh:(amt)=>`Ton téléphone et ta box te coûtent environ ${amt} par an. Les offres baissent souvent : compare avant de renouveler (attention à l'engagement).`,
   alarmName:"Alarme / télésurveillance",
   alarmDup:(names)=>`Plusieurs contrats d'alarme : ${names.join(", ")}. Vérifie que tu ne paies pas un ancien contrat (déménagement, changement d'installateur).`,
-  alarmTipAlert:(n,amt)=>`Ton alarme (${n}) te coûte environ ${amt} par an. Vérifie la date de fin d'engagement et compare avant de renouveler.`,
+  alarmTipAlert:(n,amt)=>`Ton alarme${n?` (${n})`:''} te coûte environ ${amt} par an. Vérifie la date de fin d'engagement et compare avant de renouveler.`,
   alarmTip:"Les contrats d'alarme ont souvent une durée d'engagement et un préavis. Envoie la lettre en recommandé avec accusé de réception, garde la preuve et demande comment rendre ou faire retirer le matériel.",
   letterAlarm:(s,ref,name,date)=>`Objet : résiliation de mon contrat de télésurveillance ${s}\n\n${date}\n\nMadame, Monsieur,\n\nJe vous informe de ma décision de résilier mon contrat d'alarme et de télésurveillance ${s}, associé à : ${ref} (numéro de contrat ou de client).\n\nJe vous remercie de prendre en compte cette résiliation à l'issue du préavis prévu au contrat, de cesser tout prélèvement à compter de sa date d'effet, de m'indiquer les modalités de restitution ou de retrait du matériel, et de m'envoyer une confirmation écrite précisant la date de fin du contrat.\n\nCordialement,\n${name}`,
   telTip:"Attention à l'engagement : résilier avant la fin peut coûter des frais. Pour changer d'opérateur, demande ton code RIO (appelle le 3179) : la résiliation est alors automatique et tu gardes ton numéro.",
@@ -80,7 +80,7 @@ fr:{
   fbEmail:"Ton e-mail (facultatif, pour te répondre)",
   fbComment:"Ce qui manque ou est faux (facultatif)",
   fbSend:"Envoyer mon avis",
-  fbSent:(f,n,k,a)=>`Seront envoyés : ton avis, ta banque, ton commentaire et un résumé chiffré (fichier ${f}, ${n} opérations lues, ${k} lignes détectées, ${a} par an). Jamais ton relevé ni ses opérations.`,
+  fbSent:(f,n,k,a)=>`Seront envoyés : ton avis, ta banque, ton commentaire et un résumé chiffré (${f==='manuel'?'mode manuel':`fichier ${f}, ${n} opérations lues`}, ${k} lignes détectées, ${a} par an). Jamais ton relevé ni ses opérations.`,
   fbNeedVote:"Choisis d'abord 👍, 🤏 ou 👎.",
   fbSending:"Envoi…", fbThanks:"Merci ! Ton avis est bien reçu.", fbError:"L'envoi a échoué. Vérifie ta connexion et réessaie.",
   footLocal:"ton relevé est analysé sur ton appareil, jamais envoyé",
@@ -130,7 +130,7 @@ es:{
   telHigh:(amt)=>`Tu móvil y tu fibra te cuestan unos ${amt} al año. Las tarifas bajan a menudo: compara antes de renovar (ojo a la permanencia).`,
   alarmName:"Alarma",
   alarmDup:(names)=>`Varios contratos de alarma: ${names.join(", ")}. Comprueba que no pagas un contrato antiguo (mudanza, cambio de empresa).`,
-  alarmTipAlert:(n,amt)=>`Tu alarma (${n}) te cuesta unos ${amt} al año. Revisa cuándo termina la permanencia y compara antes de renovar.`,
+  alarmTipAlert:(n,amt)=>`Tu alarma${n?` (${n})`:''} te cuesta unos ${amt} al año. Revisa cuándo termina la permanencia y compara antes de renovar.`,
   alarmTip:"Los contratos de alarma suelen tener permanencia y un plazo de preaviso. Envía la carta por burofax o correo certificado, guarda el justificante y pregunta cómo devolver o retirar los equipos.",
   letterAlarm:(s,ref,name,date)=>`Asunto: baja de mi contrato de alarma con ${s}\n\n${date}\n\nMuy señores míos:\n\nLes comunico mi decisión de dar de baja mi contrato de alarma y conexión a central receptora con ${s}, asociado a: ${ref} (número de contrato o de cliente).\n\nLes ruego que tramiten la baja en el plazo de preaviso previsto en el contrato, que no realicen más cargos a partir de la fecha de efecto, que me indiquen cómo devolver o retirar los equipos y que me envíen confirmación por escrito con la fecha de fin del contrato.\n\nAtentamente,\n${name}`,
   telTip:"Ojo a la permanencia: darte de baja antes de que termine puede tener penalización. Si cambias de compañía con portabilidad, la baja es automática y conservas tu número.",
@@ -178,7 +178,7 @@ es:{
   fbEmail:"Tu correo (opcional, para responderte)",
   fbComment:"Qué falta o está mal (opcional)",
   fbSend:"Enviar mi opinión",
-  fbSent:(f,n,k,a)=>`Se enviará: tu opinión, tu banco, tu comentario y un resumen en cifras (archivo ${f}, ${n} movimientos leídos, ${k} conceptos detectados, ${a} al año). Nunca tu extracto ni sus movimientos.`,
+  fbSent:(f,n,k,a)=>`Se enviará: tu opinión, tu banco, tu comentario y un resumen en cifras (${f==='manuel'?'modo manual':`archivo ${f}, ${n} movimientos leídos`}, ${k} conceptos detectados, ${a} al año). Nunca tu extracto ni sus movimientos.`,
   fbNeedVote:"Elige primero 👍, 🤏 o 👎.",
   fbSending:"Enviando…", fbThanks:"¡Gracias! Hemos recibido tu opinión.", fbError:"No se ha podido enviar. Revisa tu conexión y vuelve a intentarlo.",
   footLocal:"tu extracto se analiza en tu dispositivo, nunca se envía",
@@ -644,7 +644,7 @@ function render(data, animate=true){
   if(telSum>=300) alerts.push(t().telHigh(fmt(telSum)));
   const alarms = check.filter(i=>i.type==="alarm");
   if(alarms.length>=2) alerts.push(t().alarmDup(alarms.map(nameOf)));
-  else if(alarms.length) alerts.push(t().alarmTipAlert(nameOf(alarms[0]), fmt(alarms[0].annual)));
+  else if(alarms.length) alerts.push(t().alarmTipAlert(alarms[0].nameKey==='alarmName'||alarms[0].name===t().alarmName?'':nameOf(alarms[0]), fmt(alarms[0].annual)));
   const fees = check.find(i=>i.type==="fees");
   if(fees) alerts.push(t().fees(fmt(fees.annual)));
   $("alerts").innerHTML = "";
