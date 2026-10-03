@@ -103,6 +103,13 @@ h2{font-family:var(--display);font-weight:700;font-size:1.5rem;letter-spacing:-.
 .toggle input{width:1.1rem;height:1.1rem;accent-color:var(--leak);margin:0}
 .toggle:has(input:checked){border-color:var(--leak);background:var(--leak-soft);color:var(--leak)}
 .linkbtn{border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:.45rem .8rem;font:700 .95rem var(--body);cursor:pointer}
+.detail{grid-column:1 / -1;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:.4rem 1rem .8rem;margin-top:.2rem;font-size:.93rem}
+.detail h4{margin:.7rem 0 .3rem;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.detail ul{list-style:none;margin:0;padding:0}
+.detail li{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.35rem 0;border-bottom:1px dashed var(--line)}
+.detail li:last-child{border-bottom:0}
+.detail .mini{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:.2rem .55rem;font:700 .8rem var(--body);cursor:pointer}
+.detail .tipline{margin:.7rem 0 0;color:var(--muted);font-size:.88rem}
 .item.cut .name{text-decoration:line-through;text-decoration-color:var(--leak);text-decoration-thickness:2px}
 details{margin-top:2.25rem}
 details summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:1.5rem;list-style-position:outside}

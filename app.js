@@ -70,6 +70,12 @@ fr:{
     fees:"À défaut de réponse, je me réserve la possibilité de saisir le médiateur de votre établissement."},
   insTip:"La loi Hamon vaut pour l'assurance auto, habitation et les assurances liées à un achat (téléphone, carte…) après un an de contrat. Sinon, la résiliation se fait en général à l'échéance annuelle.",
   legalNote:"Modèle de lettre indicatif : ce n'est pas un conseil juridique.",
+  dShow:"Voir le détail ▾", dHide:"Masquer le détail ▴", toCheck:"à vérifier", unconf:"sur la période · non compté",
+  dSubs:"Abonnements (comptés)", dRepeat:"Achats répétés, à vérifier (non comptés)", dPending:"À confirmer avec un 2e mois (non comptés)", dOnce:"Achats ponctuels (non comptés)",
+  dBills:"Prélèvements", dFees:"Frais prélevés", dDay:d=>`le ${d} de chaque mois`, dTimes:n=>`${n} fois`,
+  markSub:"C'est un abonnement", markBuy:"C'est un achat",
+  appleTip:"💡 Tes vrais abonnements Apple : Réglages › ton nom › Abonnements (sur iPhone).",
+  googleTip:"💡 Tes vrais abonnements Google : Play Store › ta photo › Paiements et abonnements › Abonnements.",
   feeTip:"Envoie ce message à ta banque ou à ton conseiller. Les banques acceptent souvent de rembourser des frais quand on le demande.",
   yourName:"Ton nom (facultatif)",
   yourRef:"E-mail ou n° client (facultatif)",
@@ -181,6 +187,12 @@ es:{
     fees:"En caso contrario, me reservo el derecho a presentar una reclamación ante el Servicio de Reclamaciones del Banco de España."},
   insTip:"Para no renovar un seguro, avisa por escrito al menos un mes antes del vencimiento.",
   legalNote:"Modelo de carta orientativo: no es asesoramiento jurídico.",
+  dShow:"Ver el detalle ▾", dHide:"Ocultar el detalle ▴", toCheck:"a revisar", unconf:"en el periodo · no contado",
+  dSubs:"Suscripciones (contadas)", dRepeat:"Compras repetidas, a revisar (no contadas)", dPending:"Por confirmar con un 2.º mes (no contadas)", dOnce:"Compras puntuales (no contadas)",
+  dBills:"Cargos", dFees:"Comisiones cobradas", dDay:d=>`el día ${d} de cada mes`, dTimes:n=>`${n} veces`,
+  markSub:"Es una suscripción", markBuy:"Es una compra",
+  appleTip:"💡 Tus suscripciones reales de Apple: Ajustes › tu nombre › Suscripciones (en iPhone).",
+  googleTip:"💡 Tus suscripciones reales de Google: Play Store › tu foto › Pagos y suscripciones › Suscripciones.",
   feeTip:"Envía este mensaje a tu banco o a tu gestor. Los bancos suelen devolver comisiones cuando se les pide.",
   yourName:"Tu nombre (opcional)",
   yourRef:"Correo o n.º de cliente (opcional)",
@@ -489,6 +501,26 @@ function normKey(desc){
 const titleCase = s => s.toLowerCase().replace(/(^|\s)\S/g, c=>c.toUpperCase());
 
 /* ---------- Analyse ---------- */
+// Apple, Google Play : achats et abonnements ont le même libellé → on trie par montant et par jour
+const AGG = {"Apple (iCloud, Music, App Store…)":"apple","Google Play (apps)":"google"};
+function clusterize(txs, nMonths, kind){
+  const by = new Map();
+  txs.forEach(x=>{ const k=x.amt.toFixed(2); if(!by.has(k)) by.set(k,[]); by.get(k).push(x); });
+  const out = [];
+  by.forEach((list,k)=>{
+    list.sort((a,b)=>a.ts-b.ts);
+    const perMonth = {}; list.forEach(x=>perMonth[x.key]=(perMonth[x.key]||0)+1);
+    const m = Object.keys(perMonth).length, maxPer = Math.max(...Object.values(perMonth));
+    let days = list.map(x=>x.d), range = Math.max(...days)-Math.min(...days);
+    if(range>15){ const w = days.map(d=>d<=15?d+31:d); range = Math.max(...w)-Math.min(...w); }
+    const day = Math.round(days.reduce((a,b)=>a+b,0)/days.length);
+    let cls = kind==="bills" ? "bill" : nMonths===1 ? "pending" : (m>=2 && maxPer===1 && range<=4) ? "sub" : list.length>=2 ? "repeat" : "once";
+    out.push({amt:+k, n:list.length, day, dates:list.map(x=>[x.d,x.mo,x.y]), cls, counted: cls==="sub"||cls==="bill"});
+  });
+  const order = {sub:0,bill:0,repeat:1,pending:2,once:3};
+  return out.sort((a,b)=>order[a.cls]-order[b.cls] || b.amt-a.amt);
+}
+function aggAnnual(it){ return it.detail.clusters.filter(c=>c.counted).reduce((a,c)=>a+c.amt,0)*12; }
 function analyze(tx){
   const monthsSet = new Set(tx.map(x=>x.key));
   const lastKey = Math.max(...tx.map(x=>x.key));
@@ -538,7 +570,13 @@ function analyze(tx){
       const v=mk.map(k=>byMonth[k]).sort((a,b)=>a-b), md=v[Math.floor((v.length-1)/2)];
       if(v.filter(x=>x>=md*0.75 && x<=md*1.35).length<2) return;
     }
-    // plusieurs prélèvements différents sous le même nom (Apple, Google Play…) : on additionne par mois
+    if(g.type==="sub" && AGG[g.name]){
+      const it = {id:key, type:"sub", cat:g.cat, name:g.name, count:g.tx.length, estimated:false, rise:0, total,
+        detail:{kind:"agg", tip:AGG[g.name], clusters:clusterize(g.tx, nMonths, "agg")}};
+      it.annual = aggAnnual(it); it.monthly = it.annual/12; it.uncertain = it.annual===0; it.seen = total;
+      items.push(it); return;
+    }
+    // plusieurs prélèvements différents sous le même nom : on additionne par mois
     const multi = g.type==="sub" && months>=2 && (perMonth>1.2 || !stable);
     if(g.type==="telco"||g.type==="alarm"||multi){ const sp=spanFrom(mk[0]); const vals=mk.map(k=>byMonth[k]).sort((a,b)=>a-b), med=vals[Math.floor((vals.length-1)/2)], last=byMonth[mk[mk.length-1]]; annual = months===1 ? total*12 : (last>=med*0.9 ? last : med)*12; estimated = months===1; }
     else if(g.type==="fees"){ annual = total / nMonths * 12; }
@@ -557,8 +595,11 @@ function analyze(tx){
       const f = g.tx[0].amt, l = g.tx[g.tx.length-1].amt;
       if(l > f*1.03 && l <= f*1.8) rise = Math.round((l/f-1)*100);
     }
+    let detail = null;
+    if(g.type==="fees" && g.tx.length>=2) detail = {kind:"fees", list:g.tx.map(x=>({amt:x.amt, date:[x.d,x.mo,x.y], desc:x.desc}))};
+    else if(multi || ((g.type==="telco"||g.type==="alarm") && (perMonth>1.2 || !stable))) detail = {kind:"bills", clusters:clusterize(g.tx, nMonths, "bills")};
     items.push({id:key, type:g.type==="unknown"?"recurring":g.type, cat:g.cat, name:g.name, nameKey:g.nameKey,
-      annual, monthly:annual/12, count:g.tx.length, estimated, rise, total});
+      annual, monthly:annual/12, count:g.tx.length, estimated, rise, total, detail});
   });
   items.sort((a,b)=>b.annual-a.annual);
   return {items, nMonths};
@@ -586,10 +627,11 @@ function itemRow(it, withToggle){
   const tags = [];
   tags.push(`<span class="tag">${t().cats[it.cat]||it.cat}</span>`);
   if(it.rise) tags.push(`<span class="tag warn">${t().rose(it.rise)}</span>`);
+  if(it.uncertain) tags.push(`<span class="tag warn">${t().toCheck}</span>`);
   const meta = it.manual ? t().manualMeta : it.estimated ? t().once : t().times(it.count);
   li.innerHTML = `
     <div><div class="name"></div><div class="meta">${tags.join("")}${meta}</div></div>
-    <div class="price"><b>${fmt(it.annual)} ${t().year}</b><span>${fmt(it.monthly)} ${t().month}</span></div>`;
+    <div class="price">${it.uncertain ? `<b>${fmt(it.seen)}</b><span>${t().unconf}</span>` : `<b>${fmt(it.annual)} ${t().year}</b><span>${fmt(it.monthly)} ${t().month}</span>`}</div>`;
   li.querySelector(".name").textContent = nameOf(it);
   if(withToggle){
     const act = document.createElement("div"); act.className="actions";
@@ -601,8 +643,51 @@ function itemRow(it, withToggle){
     btn.textContent = it.type==="fees" ? t().feeLetter : t().letter;
     btn.addEventListener("click",()=>openLetter(it));
     act.append(lab, btn); li.append(act);
+    if(it.detail){
+      const db = document.createElement("button"); db.type="button"; db.className="linkbtn detailbtn";
+      const panel = detailPanel(it);
+      const isOpen = openDetails.has(it.id) || (it.uncertain && !closedDetails.has(it.id));
+      panel.hidden = !isOpen; db.textContent = isOpen ? t().dHide : t().dShow; db.setAttribute("aria-expanded", isOpen);
+      db.addEventListener("click",()=>{ panel.hidden = !panel.hidden; const o=!panel.hidden; db.textContent = o ? t().dHide : t().dShow; db.setAttribute("aria-expanded", o);
+        if(o){ openDetails.add(it.id); closedDetails.delete(it.id); } else { openDetails.delete(it.id); closedDetails.add(it.id); } });
+      act.append(db); li.append(panel);
+    }
   }
   return li;
+}
+
+const openDetails = new Set(), closedDetails = new Set();
+const fdate = ([d,m,y]) => new Date(y,m-1,d).toLocaleDateString(t().locale,{day:"numeric",month:"short"});
+function detailPanel(it){
+  const T = t(), D = it.detail, box = document.createElement("div"); box.className = "detail";
+  const add = (tag, txt, cls) => { const e=document.createElement(tag); if(cls) e.className=cls; e.textContent=txt; box.append(e); return e; };
+  if(D.kind==="fees"){
+    add("h4", T.dFees);
+    const ul = document.createElement("ul"); D.list.forEach(x=>{ const li=document.createElement("li"); li.textContent = `${fmt(x.amt)} · ${fdate(x.date)} · ${x.desc}`; ul.append(li); }); box.append(ul);
+    return box;
+  }
+  const groups = D.kind==="bills" ? [["bill",T.dBills]] : [["sub",T.dSubs],["repeat",T.dRepeat],["pending",T.dPending],["once",T.dOnce]];
+  groups.forEach(([cls,title])=>{
+    const cs = D.clusters.filter(c=> D.kind==="bills" ? true : (c.counted ? "sub" : (c.cls==="sub" ? "repeat" : c.cls))===cls);
+    if(!cs.length) return;
+    add("h4", title);
+    const ul = document.createElement("ul");
+    cs.forEach(c=>{
+      const li = document.createElement("li");
+      const when = (c.cls==="sub"||c.cls==="bill") && c.n>=2 ? `${T.dDay(c.day)} · ${T.dTimes(c.n)}` : c.dates.map(fdate).join(", ");
+      const txt = document.createElement("span"); txt.textContent = `${fmt(c.amt)} · ${when}`; li.append(txt);
+      if(D.kind==="agg"){
+        const b = document.createElement("button"); b.type="button"; b.className="mini";
+        b.textContent = c.counted ? T.markBuy : T.markSub;
+        b.addEventListener("click",()=>{ c.counted = !c.counted; it.annual = aggAnnual(it); it.monthly = it.annual/12; it.uncertain = it.annual===0; openDetails.add(it.id); closedDetails.delete(it.id); render(lastData,false); });
+        li.append(b);
+      }
+      ul.append(li);
+    });
+    box.append(ul);
+  });
+  if(D.kind==="agg") add("p", D.tip==="apple" ? T.appleTip : T.googleTip, "tipline");
+  return box;
 }
 
 /* ---------- Retours des utilisateurs ---------- */
@@ -656,13 +741,14 @@ function render(data, animate=true){
   const total = check.reduce((a,b)=>a+b.annual,0);
   if(animate) countUp($("bigTotal"), total, t().perYear);
   else $("bigTotal").innerHTML = fmt(total) + `<small>${t().perYear}</small>`;
-  $("perMonth").textContent = check.length ? t().perMonthLine(fmt(total/12), check.length) : "";
+  const nCounted = check.filter(i=>!i.uncertain).length;
+  $("perMonth").textContent = nCounted ? t().perMonthLine(fmt(total/12), nCounted) : "";
   const isManual = data.items.some(i=>i.manual); const note = isManual ? "" : trimmedFrom ? t().trimmed(trimmedFrom) : data.nMonths===1 ? t().oneMonth : ""; $("oneMonth").hidden = !note; $("oneMonth").textContent = note;
 
   // alertes
   const alerts = [];
   const byCat = {};
-  check.filter(i=>i.type==="sub").forEach(i=>{ (byCat[i.cat]=byCat[i.cat]||[]).push(nameOf(i)); });
+  check.filter(i=>i.type==="sub" && !i.uncertain).forEach(i=>{ (byCat[i.cat]=byCat[i.cat]||[]).push(nameOf(i)); });
   Object.entries(byCat).forEach(([c,names])=>{ if(names.length>=2 && ["video","music","cloud","gym","games"].includes(c)) alerts.push(t().dup(t().catsPlural[c]||c, names)); });
   const ins = check.filter(i=>i.type==="insurance");
   if(ins.length>=2) alerts.push(t().insDup(ins.map(nameOf)));
