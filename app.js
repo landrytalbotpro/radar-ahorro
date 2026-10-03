@@ -7,7 +7,9 @@ fr:{
   title:"Combien te coûtent vraiment tes abonnements\u00a0?",
   lead:"Dépose ton relevé bancaire. Radar repère les abonnements oubliés, les doublons, les hausses de prix et les frais bancaires, puis prépare tes lettres de résiliation.",
   drop:"Dépose ton relevé ici",
-  dropHint:"PDF, CSV ou Excel, un ou plusieurs mois. Plus il y a de mois, plus la détection est fiable.",
+  dropHint:"PDF, CSV ou Excel, de 2 à 4 mois (un ou plusieurs fichiers).",
+  errShort:"Ce relevé couvre moins de 2 mois. Pour une détection fiable, dépose 2 à 4 mois (tu peux déposer plusieurs fichiers d'un coup).",
+  trimmed:n=>`Ton relevé couvrait ${n} mois : Radar a analysé les 4 derniers, pour ne pas confondre des virements réguliers avec des abonnements.`,
   choose:"Choisir un fichier",
   paste:"Coller le texte du relevé",
   demo:"Voir un exemple, sans rien déposer",
@@ -57,6 +59,17 @@ fr:{
   empty:"Aucun abonnement ni prélèvement récurrent détecté. Si ça te semble faux, ajoute plus de mois ou colle le texte du relevé.",
   dlgTitle:(s)=>`Lettre pour ${s}`,
   dlgTip:"Essaie d'abord de résilier depuis ton compte en ligne, dans les paramètres de l'abonnement : c'est souvent immédiat. Sinon, envoie cette lettre par e-mail ou en recommandé.",
+  law:{
+    sub:"Lorsque ce contrat peut être souscrit en ligne, l'article L215-1-1 du Code de la consommation prévoit que sa résiliation puisse également se faire en ligne, de façon simple.",
+    gym:"Je vous rappelle qu'en cas de reconduction tacite, l'article L215-1 du Code de la consommation vous impose de m'informer de la possibilité de ne pas reconduire le contrat.",
+    telco:"Conformément à l'article L224-39 du Code de la consommation, la résiliation doit prendre effet au plus tard dix jours après la réception de ma demande.",
+    insurance:"Mon contrat ayant plus d'un an, je le résilie en application de l'article L113-15-2 du Code des assurances (loi Hamon) ; la résiliation prendra effet un mois après la réception de la présente.",
+    alarm:"Je vous rappelle qu'en cas de reconduction tacite, l'article L215-1 du Code de la consommation vous impose de m'informer de la possibilité de ne pas reconduire le contrat."},
+  recourse:{
+    def:"À défaut de réponse, je me réserve la possibilité de saisir gratuitement le médiateur de la consommation dont vous relevez (article L612-1 du Code de la consommation) et de faire un signalement sur SignalConso.",
+    fees:"À défaut de réponse, je me réserve la possibilité de saisir le médiateur de votre établissement."},
+  insTip:"La loi Hamon vaut pour l'assurance auto, habitation et les assurances liées à un achat (téléphone, carte…) après un an de contrat. Sinon, la résiliation se fait en général à l'échéance annuelle.",
+  legalNote:"Modèle de lettre indicatif : ce n'est pas un conseil juridique.",
   feeTip:"Envoie ce message à ta banque ou à ton conseiller. Les banques acceptent souvent de rembourser des frais quand on le demande.",
   yourName:"Ton nom (facultatif)",
   yourRef:"E-mail ou n° client (facultatif)",
@@ -105,7 +118,9 @@ es:{
   title:"¿Cuánto te cuestan de verdad tus suscripciones?",
   lead:"Sube tu extracto bancario. Radar detecta suscripciones olvidadas, duplicados, subidas de precio y comisiones, y te prepara las cartas de baja.",
   drop:"Suelta aquí tu extracto",
-  dropHint:"PDF, CSV o Excel, de uno o varios meses. Cuantos más meses, más fiable es la detección.",
+  dropHint:"PDF, CSV o Excel, de 2 a 4 meses (uno o varios archivos).",
+  errShort:"Este extracto cubre menos de 2 meses. Para una detección fiable, sube de 2 a 4 meses (puedes subir varios archivos a la vez).",
+  trimmed:n=>`Tu extracto cubría ${n} meses: Radar ha analizado los 4 últimos, para no confundir transferencias habituales con suscripciones.`,
   choose:"Elegir un archivo",
   paste:"Pegar el texto del extracto",
   demo:"Ver un ejemplo, sin subir nada",
@@ -155,6 +170,17 @@ es:{
   empty:"No se ha detectado ninguna suscripción ni cargo recurrente. Si te parece raro, añade más meses o pega el texto del extracto.",
   dlgTitle:(s)=>`Carta para ${s}`,
   dlgTip:"Prueba primero a darte de baja desde tu cuenta online, en los ajustes de la suscripción: suele ser inmediato. Si no, envía esta carta por correo electrónico o burofax.",
+  law:{
+    sub:"Conforme al artículo 62.3 del Texto Refundido de la Ley General para la Defensa de los Consumidores y Usuarios (Real Decreto Legislativo 1/2007), puedo poner fin al contrato en la misma forma en que lo celebré, sin que se pongan obstáculos a la baja.",
+    telco:"Conforme al artículo 7 del Real Decreto 899/2009 (Carta de derechos del usuario de los servicios de comunicaciones electrónicas), la baja debe tramitarse en un plazo máximo de dos días hábiles desde la recepción de esta solicitud, sin que puedan facturarme servicios posteriores.",
+    insurance:"Conforme al artículo 22 de la Ley 50/1980, de Contrato de Seguro, les comunico por escrito mi oposición a la prórroga del contrato a su próximo vencimiento."},
+  recourse:{
+    def:"En caso contrario, me reservo el derecho a presentar una reclamación ante los servicios de consumo (OMIC o Dirección General de Consumo de mi comunidad autónoma).",
+    telco:"En caso contrario, me reservo el derecho a presentar una reclamación ante la Oficina de Atención al Usuario de Telecomunicaciones.",
+    insurance:"En caso contrario, me reservo el derecho a presentar una reclamación ante el Servicio de Reclamaciones de la Dirección General de Seguros y Fondos de Pensiones.",
+    fees:"En caso contrario, me reservo el derecho a presentar una reclamación ante el Servicio de Reclamaciones del Banco de España."},
+  insTip:"Para no renovar un seguro, avisa por escrito al menos un mes antes del vencimiento.",
+  legalNote:"Modelo de carta orientativo: no es asesoramiento jurídico.",
   feeTip:"Envía este mensaje a tu banco o a tu gestor. Los bancos suelen devolver comisiones cuando se les pide.",
   yourName:"Tu nombre (opcional)",
   yourRef:"Correo o n.º de cliente (opcional)",
@@ -223,7 +249,7 @@ const clean = s => s.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"
 const SUBS = [
  [["NETFLIX"],"Netflix","video"],[["SPOTIFY"],"Spotify","music"],[["DISNEY"],"Disney+","video"],
  [["PRIME VIDEO","AMAZON PRIME","AMZN PRIME","PRIMEVIDEO","AMAZONPRIME"],"Amazon Prime","video"],
- [["HBO","MAX.COM"],"Max","video"],[["APPLE.COM/BILL","ITUNES","ICLOUD","APPLE COM BILL"],"Apple (iCloud, App Store)","cloud"],
+ [["HBO","MAX.COM"],"Max","video"],[["APPLE.COM/BILL","ITUNES","ICLOUD","APPLE COM BILL"],"Apple (iCloud, Music, App Store…)","cloud"],[["GOOGLE PLAY","GOOGLE PLAY APPS"],"Google Play (apps)","apps"],
  [["GOOGLE ONE","GOOGLE STORAGE"],"Google One","cloud"],[["YOUTUBE"],"YouTube Premium","video"],
  [["DEEZER"],"Deezer","music"],[["DAZN"],"DAZN","video"],[["MOVISTAR+","MOVISTAR PLUS"],"Movistar Plus+","video"],
  [["CANAL+","CANAL PLUS","CANALPLUS"],"Canal+","video"],[["FILMIN"],"Filmin","video"],[["CRUNCHYROLL"],"Crunchyroll","video"],
@@ -512,7 +538,9 @@ function analyze(tx){
       const v=mk.map(k=>byMonth[k]).sort((a,b)=>a-b), md=v[Math.floor((v.length-1)/2)];
       if(v.filter(x=>x>=md*0.75 && x<=md*1.35).length<2) return;
     }
-    if(g.type==="telco"||g.type==="alarm"){ const sp=spanFrom(mk[0]); const vals=mk.map(k=>byMonth[k]).sort((a,b)=>a-b), med=vals[Math.floor((vals.length-1)/2)], last=byMonth[mk[mk.length-1]]; annual = months===1 ? total*12 : (last>=med*0.9 ? last : med)*12; estimated = months===1; }
+    // plusieurs prélèvements différents sous le même nom (Apple, Google Play…) : on additionne par mois
+    const multi = g.type==="sub" && months>=2 && (perMonth>1.2 || !stable);
+    if(g.type==="telco"||g.type==="alarm"||multi){ const sp=spanFrom(mk[0]); const vals=mk.map(k=>byMonth[k]).sort((a,b)=>a-b), med=vals[Math.floor((vals.length-1)/2)], last=byMonth[mk[mk.length-1]]; annual = months===1 ? total*12 : (last>=med*0.9 ? last : med)*12; estimated = months===1; }
     else if(g.type==="fees"){ annual = total / nMonths * 12; }
     else if(months===1 && g.tx.length===1){ annual = amts[0]*12; estimated = true; }
     else {
@@ -522,7 +550,8 @@ function analyze(tx){
     }
 
     let rise = 0;
-    if(g.type==="telco"||g.type==="alarm"){
+    if(multi){ /* montant variable par nature : pas d'alerte de hausse */ }
+    else if(g.type==="telco"||g.type==="alarm"){
       if(mk.length>=2){ const f=byMonth[mk[0]], l=byMonth[mk[mk.length-1]]; if(l>f*1.03 && l<=f*1.8) rise=Math.round((l/f-1)*100); }
     } else if(g.type!=="fees" && g.tx.length>=2){
       const f = g.tx[0].amt, l = g.tx[g.tx.length-1].amt;
@@ -628,7 +657,7 @@ function render(data, animate=true){
   if(animate) countUp($("bigTotal"), total, t().perYear);
   else $("bigTotal").innerHTML = fmt(total) + `<small>${t().perYear}</small>`;
   $("perMonth").textContent = check.length ? t().perMonthLine(fmt(total/12), check.length) : "";
-  $("oneMonth").hidden = data.nMonths>1;
+  $("oneMonth").hidden = !trimmedFrom || !!data.items.some(i=>i.manual); if(trimmedFrom) $("oneMonth").textContent = t().trimmed(trimmedFrom);
 
   // alertes
   const alerts = [];
@@ -706,13 +735,19 @@ function buildLetter(){
     : current.type==="telco" ? t().letterTel(nameOf(current), ref, name, date)
     : current.type==="alarm" ? t().letterAlarm(nameOf(current), ref, name, date)
     : t().letterSub(nameOf(current), ref, name, date);
+  // rappel des droits adapté au type d'abonnement
+  const T = t(), ty = current.type, law = T.law || {}, rec = T.recourse || {};
+  const lawTxt = ty==="fees" ? "" : ty==="telco" ? law.telco : ty==="insurance" ? law.insurance : ty==="alarm" ? (law.alarm||law.sub) : current.cat==="gym" ? (law.gym||law.sub) : law.sub;
+  const recTxt = rec[ty] || rec.def || "";
+  const extra = [lawTxt, recTxt].filter(Boolean).join("\n\n");
+  if(extra) $("letter").value = $("letter").value.replace(/\n\n(Cordialement|Atentamente),/, "\n\n"+extra+"\n\n$1,");
   updateMail();
 }
 function openLetter(it){
   current = it;
   $("dlgTitle").textContent = t().dlgTitle(nameOf(it));
   const url = cancelUrl(it);
-  $("dlgTip").textContent = it.type==="fees" ? t().feeTip : it.type==="telco" ? t().telTip : it.type==="alarm" ? t().alarmTip : (url ? t().onlineTip : t().dlgTip);
+  $("dlgTip").textContent = it.type==="fees" ? t().feeTip : it.type==="telco" ? t().telTip : it.type==="alarm" ? t().alarmTip : it.type==="insurance" ? t().insTip : (url ? t().onlineTip : t().dlgTip);
   $("onlineBtn").hidden = !url; $("orLine").hidden = !url;
   if(url){ $("onlineBtn").href = url; $("onlineBtn").textContent = t().online(nameOf(it)); }
   $("copyBtn").textContent = t().copy;
@@ -911,9 +946,16 @@ async function handleFiles(files){
 
 function run(lines){ lastFormats = "texte"; runTx(finalizeTx([linesToTx(lines, true)])); }
 let lastFormats = "", lastTxCount = 0;
+let trimmedFrom = 0;
 function runTx(tx){
   lastTxCount = tx.length;
   if(tx.length < 2){ status(t().errNone, true); return; }
+  // période : 2 mois minimum, 4 mois maximum (les plus récents)
+  const tsList = tx.map(x=>x.ts), spanDays = (Math.max(...tsList)-Math.min(...tsList))/864e5;
+  if(spanDays < 40){ status(t().errShort, true); return; }
+  const keys = [...new Set(tx.map(x=>x.key))].sort((a,b)=>a-b);
+  trimmedFrom = 0;
+  if(keys.length > 4){ trimmedFrom = keys.length; const k0 = keys[keys.length-4]; tx = tx.filter(x=>x.key>=k0); lastTxCount = tx.length; }
   status("");
   selected.clear();
   lastData = analyze(tx);
@@ -999,7 +1041,7 @@ function manualTotal(){ const s = manualPicked().reduce((a,b)=>a+b.annual,0); $(
 $("manualToggle").addEventListener("click",()=>{ buildManual(); manualTotal(); $("manualBox").hidden = !$("manualBox").hidden; if(!$("manualBox").hidden) $("manualBox").scrollIntoView({behavior:"smooth",block:"start"}); });
 $("manualGo").addEventListener("click",()=>{
   const items = manualPicked().sort((a,b)=>b.annual-a.annual); if(!items.length) return;
-  lastFormats = "manuel"; lastTxCount = 0;
+  lastFormats = "manuel"; lastTxCount = 0; trimmedFrom = 0;
   selected.clear(); lastData = {items, nMonths:12};
   $("intro").hidden = true; $("results").hidden = false; render(lastData, true); window.scrollTo({top:0});
 });
