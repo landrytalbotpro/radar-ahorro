@@ -7,8 +7,8 @@ fr:{
   title:"Combien te coûtent vraiment tes abonnements\u00a0?",
   lead:"Dépose ton relevé bancaire. Radar repère les abonnements oubliés, les doublons, les hausses de prix et les frais bancaires, puis prépare tes lettres de résiliation.",
   drop:"Dépose ton relevé ici",
-  dropHint:"PDF, CSV ou Excel, de 2 à 4 mois (un ou plusieurs fichiers).",
-  errShort:"Ce relevé couvre moins de 2 mois. Pour une détection fiable, dépose 2 à 4 mois (tu peux déposer plusieurs fichiers d'un coup).",
+  dropHint:"PDF, CSV ou Excel, de 1 à 4 mois (un ou plusieurs fichiers).",
+  errShort:"Ce relevé couvre moins d'un mois. Dépose au moins un mois complet, jusqu'à 4 mois (tu peux déposer plusieurs fichiers d'un coup).",
   trimmed:n=>`Ton relevé couvrait ${n} mois : Radar a analysé les 4 derniers, pour ne pas confondre des virements réguliers avec des abonnements.`,
   choose:"Choisir un fichier",
   paste:"Coller le texte du relevé",
@@ -118,8 +118,8 @@ es:{
   title:"¿Cuánto te cuestan de verdad tus suscripciones?",
   lead:"Sube tu extracto bancario. Radar detecta suscripciones olvidadas, duplicados, subidas de precio y comisiones, y te prepara las cartas de baja.",
   drop:"Suelta aquí tu extracto",
-  dropHint:"PDF, CSV o Excel, de 2 a 4 meses (uno o varios archivos).",
-  errShort:"Este extracto cubre menos de 2 meses. Para una detección fiable, sube de 2 a 4 meses (puedes subir varios archivos a la vez).",
+  dropHint:"PDF, CSV o Excel, de 1 a 4 meses (uno o varios archivos).",
+  errShort:"Este extracto cubre menos de un mes. Sube al menos un mes completo, hasta 4 meses (puedes subir varios archivos a la vez).",
   trimmed:n=>`Tu extracto cubría ${n} meses: Radar ha analizado los 4 últimos, para no confundir transferencias habituales con suscripciones.`,
   choose:"Elegir un archivo",
   paste:"Pegar el texto del extracto",
@@ -657,7 +657,7 @@ function render(data, animate=true){
   if(animate) countUp($("bigTotal"), total, t().perYear);
   else $("bigTotal").innerHTML = fmt(total) + `<small>${t().perYear}</small>`;
   $("perMonth").textContent = check.length ? t().perMonthLine(fmt(total/12), check.length) : "";
-  $("oneMonth").hidden = !trimmedFrom || !!data.items.some(i=>i.manual); if(trimmedFrom) $("oneMonth").textContent = t().trimmed(trimmedFrom);
+  const isManual = data.items.some(i=>i.manual); const note = isManual ? "" : trimmedFrom ? t().trimmed(trimmedFrom) : data.nMonths===1 ? t().oneMonth : ""; $("oneMonth").hidden = !note; $("oneMonth").textContent = note;
 
   // alertes
   const alerts = [];
@@ -950,9 +950,9 @@ let trimmedFrom = 0;
 function runTx(tx){
   lastTxCount = tx.length;
   if(tx.length < 2){ status(t().errNone, true); return; }
-  // période : 2 mois minimum, 4 mois maximum (les plus récents)
+  // période : 1 mois minimum, 4 mois maximum (les plus récents)
   const tsList = tx.map(x=>x.ts), spanDays = (Math.max(...tsList)-Math.min(...tsList))/864e5;
-  if(spanDays < 40){ status(t().errShort, true); return; }
+  if(spanDays < 20){ status(t().errShort, true); return; }
   const keys = [...new Set(tx.map(x=>x.key))].sort((a,b)=>a-b);
   trimmedFrom = 0;
   if(keys.length > 4){ trimmedFrom = keys.length; const k0 = keys[keys.length-4]; tx = tx.filter(x=>x.key>=k0); lastTxCount = tx.length; }
