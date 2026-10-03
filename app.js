@@ -598,6 +598,7 @@ function analyze(tx){
     let detail = null;
     if(g.type==="fees" && g.tx.length>=2) detail = {kind:"fees", list:g.tx.map(x=>({amt:x.amt, date:[x.d,x.mo,x.y], desc:x.desc}))};
     else if(multi || ((g.type==="telco"||g.type==="alarm") && (perMonth>1.2 || !stable))) detail = {kind:"bills", clusters:clusterize(g.tx, nMonths, "bills")};
+    else detail = {kind:"list", list:g.tx.map(x=>({amt:x.amt, date:[x.d,x.mo,x.y], desc:x.desc}))};
     items.push({id:key, type:g.type==="unknown"?"recurring":g.type, cat:g.cat, name:g.name, nameKey:g.nameKey,
       annual, monthly:annual/12, count:g.tx.length, estimated, rise, total, detail});
   });
@@ -643,7 +644,10 @@ function itemRow(it, withToggle){
     btn.textContent = it.type==="fees" ? t().feeLetter : t().letter;
     btn.addEventListener("click",()=>openLetter(it));
     act.append(lab, btn); li.append(act);
-    if(it.detail){
+  }
+  if(it.detail){
+    let act = li.querySelector(".actions"); if(!act){ act = document.createElement("div"); act.className="actions"; li.append(act); }
+    {
       const db = document.createElement("button"); db.type="button"; db.className="linkbtn detailbtn";
       const panel = detailPanel(it);
       const isOpen = openDetails.has(it.id) || (it.uncertain && !closedDetails.has(it.id));
@@ -661,8 +665,8 @@ const fdate = ([d,m,y]) => new Date(y,m-1,d).toLocaleDateString(t().locale,{day:
 function detailPanel(it){
   const T = t(), D = it.detail, box = document.createElement("div"); box.className = "detail";
   const add = (tag, txt, cls) => { const e=document.createElement(tag); if(cls) e.className=cls; e.textContent=txt; box.append(e); return e; };
-  if(D.kind==="fees"){
-    add("h4", T.dFees);
+  if(D.kind==="fees" || D.kind==="list"){
+    add("h4", D.kind==="fees" ? T.dFees : T.dBills);
     const ul = document.createElement("ul"); D.list.forEach(x=>{ const li=document.createElement("li"); li.textContent = `${fmt(x.amt)} · ${fdate(x.date)} · ${x.desc}`; ul.append(li); }); box.append(ul);
     return box;
   }
