@@ -238,23 +238,40 @@ es:{
   locale:"es-ES"
 }};
 
-let lang = (navigator.language||"fr").toLowerCase().startsWith("es") ? "es" : "fr";
-try{ const s = localStorage.getItem("radar-lang"); if(s==="fr"||s==="es") lang=s; }catch(e){}
+// La langue vient de la page (/es/ ou /fr/, écrite en dur dans le HTML) : ce que voit Google = ce que voit le visiteur.
+const PAGE_LANG = document.documentElement.lang==="fr" ? "fr" : "es";
+let lang = PAGE_LANG;
 const t = () => T[lang];
 
 function applyLang(){
   document.documentElement.lang = lang;
   document.querySelectorAll("[data-i]").forEach(el=>{ const v=t()[el.dataset.i]; if(typeof v==="string") el.textContent=v; });
-  document.querySelectorAll("#langGroup button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang===lang)));
+  document.querySelectorAll("#langGroup a").forEach(a=>{ if(a.dataset.lang===lang) a.setAttribute("aria-current","true"); else a.removeAttribute("aria-current"); });
   document.getElementById("langGroup").setAttribute("aria-label", t().langLabel);
   if($("whoProjects")) $("whoProjects").innerHTML = t().whoProjects;
   if(typeof netBadge==="function") netBadge();
   if($("mlist") && $("mlist").children.length){ buildManual(); manualTotal(); }
   if(lastData) render(lastData, false);
 }
-document.querySelectorAll("#langGroup button").forEach(b=>b.addEventListener("click",()=>{
-  lang=b.dataset.lang; try{localStorage.setItem("radar-lang",lang)}catch(e){} applyLang();
+// FR / ES : lien normal vers /fr/ ou /es/. Mais si une analyse (ou le mode manuel) est en cours,
+// on change la langue sur place comme avant, pour ne pas perdre les résultats ni la lettre.
+document.querySelectorAll("#langGroup a").forEach(a=>a.addEventListener("click",e=>{
+  const l=a.dataset.lang; try{localStorage.setItem("radar-lang",l)}catch(_){}
+  if(l===lang){ e.preventDefault(); return; }
+  const busy = !$("results").hidden || !$("manualBox").hidden || !!$("pasteArea").value.trim();
+  if(!busy) return; // navigation normale vers l'autre page
+  e.preventDefault(); lang=l;
+  const info=$("info"); if(info) info.hidden = (l!==PAGE_LANG); // le texte fixe de la page reste dans sa langue : on le cache
+  applyLang();
 }));
+// Racine (espagnol par défaut) : si le navigateur est en français, petit lien vers /fr/. Pas de redirection.
+if(document.documentElement.dataset.page==="root"){
+  let pref=null; try{ pref=localStorage.getItem("radar-lang"); }catch(e){}
+  const wantsFr = pref ? pref==="fr" : (navigator.language||"").toLowerCase().startsWith("fr");
+  if(wantsFr){ const p=document.createElement("p"); p.className="langhint"; p.lang="fr";
+    p.innerHTML='Radar existe aussi en français → <a href="/fr/">version française</a>';
+    document.getElementById("intro").prepend(p); }
+}
 
 /* ---------- Dictionnaires ---------- */
 const clean = s => s.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
@@ -885,7 +902,7 @@ function signByColumn(parts, cols){
 let pdfReady = null;
 function loadPDF(){
   if(window.pdfjsLib) return Promise.resolve();
-  if(!pdfReady) pdfReady = loadScript("vendor/pdf.min.js").then(()=>{ pdfjsLib.GlobalWorkerOptions.workerSrc = "vendor/pdf.worker.min.js"; }).catch(e=>{ pdfReady=null; throw e; });
+  if(!pdfReady) pdfReady = loadScript("/vendor/pdf.min.js").then(()=>{ pdfjsLib.GlobalWorkerOptions.workerSrc = "/vendor/pdf.worker.min.js"; }).catch(e=>{ pdfReady=null; throw e; });
   return pdfReady;
 }
 async function pdfLines(file){
@@ -960,7 +977,7 @@ async function readText(file){
 }
 
 let xlsxReady = null;
-const XLSX_URLS = ["vendor/xlsx.full.min.js"];
+const XLSX_URLS = ["/vendor/xlsx.full.min.js"];
 function loadScript(src){ return new Promise((ok,ko)=>{ const s=document.createElement("script"); s.src=src; s.onload=ok; s.onerror=()=>{ s.remove(); ko(new Error("noxlsx")); }; document.head.append(s); }); }
 function loadXLSX(){
   if(window.XLSX) return Promise.resolve();
@@ -1141,5 +1158,5 @@ function netBadge(){ const b=$("netBadge"); const off=!navigator.onLine; b.textC
 window.addEventListener("online", netBadge); window.addEventListener("offline", netBadge);
 
 applyLang();
-if("serviceWorker" in navigator && location.protocol==="https:"){ window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }
+if("serviceWorker" in navigator && location.protocol==="https:"){ window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{})); }
 })();

@@ -9,7 +9,7 @@
 ## 🔒 Tu extracto nunca sale de tu dispositivo / Ton relevé ne quitte jamais ton appareil
 
 - Todo el análisis se hace en `app.js`, en tu navegador. No hay servidor, ni base de datos, ni registro.
-- La política de seguridad del sitio (`_headers`) **bloquea** cualquier conexión salvo a la propia web (y a `formspree.io`, solo para el formulario de opinión opcional, que nunca incluye el extracto).
+- La política de seguridad del sitio (`_headers`) **bloquea** cualquier conexión salvo a la propia web (y a `api.web3forms.com`, solo para el formulario de opinión opcional, que nunca incluye el extracto).
 - Prueba del modo avión: abre la web, activa el modo avión y sube tu extracto. Funciona igual.
 
 Tout le code est ici : vérifie par toi-même qu'aucune donnée n'est envoyée.
@@ -18,7 +18,9 @@ Tout le code est ici : vérifie par toi-même qu'aucune donnée n'est envoyée.
 
 | Archivo | Rol |
 |---|---|
-| `index.html` | Página |
+| `index.html`, `es/`, `fr/` | Páginas (generadas: no editar a mano) |
+| `_build/` | Plantilla, textos fijos ES/FR y `config.json` con la URL del sitio. Regenerar con `node _build/build.js` |
+| `sitemap.xml`, `robots.txt` | Generados por `_build/build.js` |
 | `app.js` | Lectura del extracto, detección y cartas |
 | `config.js` | Ajustes (formulario de opinión) |
 | `sw.js` | Funcionamiento sin conexión |
