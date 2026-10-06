@@ -1084,6 +1084,16 @@ $("restart").addEventListener("click",()=>{
   lastData=null; selected.clear(); $("file").value=""; $("fbStatus").textContent="";
   $("results").hidden=true; $("intro").hidden=false; status(""); window.scrollTo({top:0});
 });
+// Clic sur le logo Radar : retour au début, sans recharger (marche aussi en mode avion et garde la langue choisie)
+document.querySelector(".brand").addEventListener("click", e=>{
+  if(e.metaKey||e.ctrlKey||e.shiftKey||e.button===1) return; // nouvel onglet : comportement normal
+  e.preventDefault();
+  lastData=null; selected.clear(); $("file").value=""; $("fbStatus").textContent="";
+  $("results").hidden=true; $("intro").hidden=false; status("");
+  $("manualBox").hidden=true; $("pasteBox").hidden=true; $("pasteArea").value="";
+  const info=$("info"); if(info) info.hidden = (lang!==PAGE_LANG);
+  window.scrollTo({top:0, behavior:"smooth"});
+});
 
 /* ---------- Relevé d'exemple ---------- */
 function demoLines(){
