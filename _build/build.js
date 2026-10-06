@@ -63,6 +63,7 @@ function page(lang, isRoot) {
        .replace("{{PAGE_ATTR}}", isRoot ? ' data-page="root"' : "")
        .replace("{{HEAD_SEO}}", head(lang, isRoot))
        .replace("{{BETA}}", META[lang].beta)
+       .replace("{{HOME}}", isRoot ? "/" : `/${lang}/`)
        .replace("{{LANG_LABEL}}", esc(D.langLabel))
        .replace("{{CUR_FR}}", lang === "fr" ? ' aria-current="true"' : "")
        .replace("{{CUR_ES}}", lang === "es" ? ' aria-current="true"' : "")
