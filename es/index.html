@@ -58,8 +58,9 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.55;-webkit-font-smoothing:antialiased}
 .wrap{max-width:46rem;margin:0 auto;padding:0 1.25rem}
 header{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 0}
-.brand{display:flex;align-items:center;gap:.55rem;font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:-.01em}
+.brand{color:inherit;text-decoration:none;border-radius:10px;display:flex;align-items:center;gap:.55rem;font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:-.01em}
 .brand svg{width:26px;height:26px}
+.brand:focus-visible{outline:3px solid var(--water);outline-offset:4px}
 .lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface)}
 .lang a{color:var(--muted);font:700 .85rem var(--body);padding:.3rem .75rem;border-radius:999px;text-decoration:none}
 .lang a[aria-current="true"]{background:var(--ink);color:var(--paper)}
@@ -209,10 +210,10 @@ dialog::backdrop{background:rgba(10,20,26,.55)}
 <body>
 <div class="wrap">
   <header>
-    <div class="brand">
+    <a class="brand" href="/es/">
       <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="16" cy="16" r="7.5" fill="none" stroke="currentColor" stroke-width="2.5" opacity=".5"/><path d="M16 16 L27 9" stroke="#B23A26" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="2.4" fill="currentColor"/></svg>
       Radar <span class="beta">beta</span>
-    </div>
+    </a>
     <nav class="lang" id="langGroup" aria-label="Idioma">
       <a href="/fr/" hreflang="fr" lang="fr" data-lang="fr">FR</a>
       <a href="/es/" hreflang="es" lang="es" data-lang="es" aria-current="true">ES</a>
