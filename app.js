@@ -261,7 +261,7 @@ document.querySelectorAll("#langGroup a").forEach(a=>a.addEventListener("click",
   const busy = !$("results").hidden || !$("manualBox").hidden || !!$("pasteArea").value.trim();
   if(!busy) return; // navigation normale vers l'autre page
   e.preventDefault(); lang=l;
-  const info=$("info"); if(info) info.hidden = (l!==PAGE_LANG); // le texte fixe de la page reste dans sa langue : on le cache
+  syncInfo();
   applyLang();
 }));
 // Racine (espagnol par défaut) : si le navigateur est en français, petit lien vers /fr/. Pas de redirection.
@@ -1084,6 +1084,14 @@ $("restart").addEventListener("click",()=>{
   lastData=null; selected.clear(); $("file").value=""; $("fbStatus").textContent="";
   $("results").hidden=true; $("intro").hidden=false; status(""); window.scrollTo({top:0});
 });
+// Texte « Ce que fait Radar / FAQ » : visible seulement sur l'accueil.
+// Caché dès qu'on regarde l'exemple, coche ses abonnements, colle un relevé ou voit des résultats ; il revient au retour à l'accueil.
+// (Il reste dans le HTML pour Google.) Caché aussi si la langue a été changée sur place, car il est écrit dans la langue de la page.
+function syncInfo(){
+  const info=$("info"); if(!info) return;
+  info.hidden = lang!==PAGE_LANG || !$("results").hidden || !$("manualBox").hidden || !$("pasteBox").hidden;
+}
+["results","manualBox","pasteBox"].forEach(id=>new MutationObserver(syncInfo).observe($(id),{attributes:true,attributeFilter:["hidden"]}));
 // Clic sur le logo Radar : retour au début, sans recharger (marche aussi en mode avion et garde la langue choisie)
 document.querySelector(".brand").addEventListener("click", e=>{
   if(e.metaKey||e.ctrlKey||e.shiftKey||e.button===1) return; // nouvel onglet : comportement normal
@@ -1091,7 +1099,6 @@ document.querySelector(".brand").addEventListener("click", e=>{
   lastData=null; selected.clear(); $("file").value=""; $("fbStatus").textContent="";
   $("results").hidden=true; $("intro").hidden=false; status("");
   $("manualBox").hidden=true; $("pasteBox").hidden=true; $("pasteArea").value="";
-  const info=$("info"); if(info) info.hidden = (lang!==PAGE_LANG);
   window.scrollTo({top:0, behavior:"smooth"});
 });
 
