@@ -51,8 +51,11 @@ function head(lang, page) {
     `<meta property="og:locale:alternate" content="${META[other].locale}">`,
     `<meta property="og:title" content="${esc(m.ogTitle)}">`,
     `<meta property="og:description" content="${esc(m.ogDesc)}">`,
-    `<meta property="og:image" content="${SITE}/icons/icon-512.png">`,
-    `<meta name="twitter:card" content="summary">`
+    `<meta property="og:image" content="${SITE}/icons/og-${lang}.png">`,
+    `<meta property="og:image:width" content="1200">`,
+    `<meta property="og:image:height" content="630">`,
+    `<meta property="og:image:alt" content="${esc(m.ogTitle)}">`,
+    `<meta name="twitter:card" content="summary_large_image">`
   ].join("\n");
 }
 
