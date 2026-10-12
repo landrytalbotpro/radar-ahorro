@@ -19,8 +19,9 @@ Tout le code est ici : vérifie par toi-même qu'aucune donnée n'est envoyée.
 | Archivo | Rol |
 |---|---|
 | `index.html`, `es/`, `fr/` | Páginas (generadas: no editar a mano) |
-| `_build/` | Plantilla, textos fijos ES/FR y `config.json` con la URL del sitio. Regenerar con `node _build/build.js` |
+| `_build/` | Plantilla, textos fijos ES/FR y `config.json` con la URL del sitio. Regenerar con `node _build/build.js` (imágenes para compartir: `node _build/og.js`) |
 | `sitemap.xml`, `robots.txt` | Generados por `_build/build.js` |
+| `404.html` | Página de error (ES/FR) |
 | `app.js` | Lectura del extracto, detección y cartas |
 | `config.js` | Ajustes (formulario de opinión) |
 | `sw.js` | Funcionamiento sin conexión |
